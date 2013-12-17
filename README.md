@@ -11,7 +11,7 @@ Unlike other libraries, optionator prefers to fail with helpful error messages r
     $ cmd --count str
     Invalid value for option 'count' - expected type Int, received value: str.
 
-MIT license. Version 0.1.0.
+MIT license. Version 0.1.1.
 
     npm install optionator
 
