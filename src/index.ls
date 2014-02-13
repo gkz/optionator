@@ -58,6 +58,23 @@ main = (lib-options) ->
             throw new Error "Option '#name': Error parsing enum value '#possibility' for type '#{option.type}': #{e.message}"
         option.parsed-possibilities = parsed-possibilities
 
+      if option.depends-on
+        if that.length
+          [raw-depends-type, ...depends-opts] = [].concat option.depends-on
+          depends-type = raw-depends-type.to-lower-case!
+          if depends-opts.length
+            if depends-type in <[ and or ]>
+              option.depends-on = [depends-type, ...depends-opts]
+            else
+              throw new Error "Option '#name': If you have more than one dependency, you must specify either 'and' or 'or'"
+          else
+            if depends-type.to-lower-case! in <[ and or ]>
+              option.depends-on = null
+            else
+              option.depends-on = ['and', raw-depends-type] # if only one dependency, doesn't matter and/or
+        else
+          option.depends-on = null
+
       required.push name if option.required
 
       opts[name] = option
@@ -133,6 +150,25 @@ main = (lib-options) ->
               else
                 present = element
 
+    check-dependency = (option) ->
+      depends-on = option.depends-on
+      return true if not depends-on or option.dependencies-met
+      [type, ...target-option-names] = depends-on
+      for target-option-name in target-option-names
+        target-option = obj[target-option-name]
+        if target-option and check-dependency target-option
+          return true if type is 'or' # we only need one dependency to be met for "or"
+        else if type is 'and'
+          throw new Error "The option '#{option.option}' did not have its dependencies met."
+      if type is 'and'
+        true # no errors with "and", thus we're good
+      else # type is 'or' - no dependencies were met, thus no good
+        throw new Error "The option '#{option.option}' did not meet any of its dependencies."
+
+    check-dependencies = !->
+      for name of obj
+        check-dependency opts[name]
+
     switch typeof! input
     | 'String'
       args = parse-string input.slice slice ? 0
@@ -147,6 +183,7 @@ main = (lib-options) ->
         else
           throw new Error "Option '#{option.option}': Invalid type for '#value' - expected type '#{option.type}'."
       check-mutually-exclusive!
+      check-dependencies!
       set-defaults!
       check-required!
       obj._ = input._ or []
@@ -221,6 +258,7 @@ main = (lib-options) ->
             positional.push arg
 
     check-mutually-exclusive!
+    check-dependencies!
     set-defaults!
     check-required!
     obj._ = positional

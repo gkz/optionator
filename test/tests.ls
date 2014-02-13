@@ -373,6 +373,71 @@ suite 'errors parsing options' ->
     throws (-> q '--cc --dd', opts, more), /The options --cc and --dd are mutually exclusive - you cannot use them at the same time/
     throws (-> q {aaAa: true, bb: true}, opts, more), /The options --aa-aa and --bb are mutually exclusive - you cannot use them at the same time/
 
+suite 'dependency check' ->
+  opts =
+    * option: 'aa'
+      type: 'Boolean'
+    * option: 'bb'
+      type: 'Boolean'
+      depends-on: ['or', 'aa', 'dd']
+    * option: 'cc'
+      type: 'Boolean'
+      depends-on: ['and', 'aa', 'dd']
+    * option: 'dd'
+      type: 'Boolean'
+    * option: 'ff'
+      type: 'Boolean'
+      depends-on: 'aa'
+    * option: 'gg'
+      type: 'Boolean'
+      depends-on: ['aa']
+
+  test '"and" should pass' ->
+    eq {+cc, +aa, +dd}, [], '--cc --aa --dd', opts
+
+  test '"and" should fail' ->
+    throws (-> q '--cc', opts), /The option 'cc' did not have its dependencies met/
+    throws (-> q '--cc --aa', opts), /The option 'cc' did not have its dependencies met/
+    throws (-> q '--cc --dd', opts), /The option 'cc' did not have its dependencies met/
+
+  test '"or" should pass' ->
+    eq {+bb, +aa}, [], '--bb --aa', opts
+    eq {+bb, +dd}, [], '--bb --dd', opts
+
+  test '"or" should fail' ->
+    throws (-> q '--bb', opts), /The option 'bb' did not meet any of its dependencies/
+
+  test 'single dependency, as string' ->
+    eq {+ff, +aa}, [], '--ff --aa', opts
+
+  test 'single dependency, in array' ->
+    eq {+gg, +aa}, [], '--gg --aa', opts
+
+  test 'just "and"' ->
+    opts = [
+      option: 'xx'
+      type: 'Boolean'
+      depends-on: ['and']
+    ]
+    eq {+xx}, [], '--xx', opts
+
+  test 'empty array' ->
+    opts = [
+      option: 'xx'
+      type: 'Boolean'
+      depends-on: []
+    ]
+    eq {+xx}, [], '--xx', opts
+
+  test 'not using "and" or "or"' ->
+    opts = [
+      option: 'fail'
+      type: 'Boolean'
+      depends-on: ['blerg', 'grr']
+    ]
+
+    throws (-> q '--fail', opts), /Option 'fail': If you have more than one dependency, you must specify either 'and' or 'or'/
+
 suite 'heading' ->
   opts =
     * option: 'aaa'
