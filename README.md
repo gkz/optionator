@@ -10,6 +10,8 @@ Unlike other libraries, optionator prefers to fail with helpful error messages r
 
     $ cmd --count str
     Invalid value for option 'count' - expected type Int, received value: str.
+    
+Optionator is used by [Grasp](http://graspjs.com) and [eslint](https://github.com/eslint/eslint).
 
 MIT license. Version 0.1.1.
 
