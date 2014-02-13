@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "author": "George Zahariev <z@georgezahariev.com>",
   "description": "option parsing",
-  "homepage": "",
+  "homepage": "https://github.com/gkz/optionator",
   "keywords": "options",
   "files": [
     "lib",
