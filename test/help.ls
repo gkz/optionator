@@ -1,6 +1,5 @@
 optionator = require '..'
 {strict-equal: equal} = require 'assert'
-vm = require 'vm'
 
 q = (expected, options, args) ->
   {generate-help} = optionator options
