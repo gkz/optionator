@@ -185,6 +185,27 @@ suite 'help' ->
     q '  --visible  boring', opts
     q '  --hidden   magic\n  --visible  boring', opts, {+show-hidden}
 
+  test 'interpolation' ->
+    opts =
+      prepend: 'usage {{x}}'
+      options: [{heading: 'Options'}]
+      append: 'version {{version}}'
+
+    q '''
+      usage {{x}}
+
+      Options:
+
+      version {{version}}
+      ''', opts
+    q '''
+      usage cmd
+
+      Options:
+
+      version 2
+      ''', opts, {interpolate-data: {x: 'cmd', version: 2}}
+
   test 'no stdout' ->
     q '''
       cmd
