@@ -87,14 +87,14 @@ generate-help = ({options, prepend, append, help-style = {}, stdout}) ->
     max-pad-factor, initial-indent, secondary-indent
   } = help-style
 
-  ({show-hidden, interpolate = {}} = {}) ->
+  ({show-hidden, interpolate} = {}) ->
     max-width = if stdout?.isTTY then stdout.columns - 1 else null
 
     output = []
     out = -> output.push it ? ''
 
     if prepend
-      out interp prepend, interpolate
+      out (if interpolate then interp prepend, interpolate else prepend)
       out!
 
     data = []
@@ -175,7 +175,7 @@ generate-help = ({options, prepend, append, help-style = {}, stdout}) ->
 
     if append
       out!
-      out interp append, interpolate
+      out (if interpolate then interp append, interpolate else append)
 
     unlines output
 
@@ -191,8 +191,6 @@ function sentencize str
   "#first#rest#period"
 
 function interp string, object
-  for key, value of object
-    string = string.replace //{{#key}}//, value
-  string
+  string.replace /{{([a-zA-Z$_][a-zA-Z$_0-9]*)}}/g, (, key) -> object[key] ? "{{#key}}"
 
 module.exports = {generate-help, generate-help-for-option}

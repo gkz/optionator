@@ -184,26 +184,60 @@ suite 'help' ->
     q '  --visible  boring', opts
     q '  --hidden   magic\n  --visible  boring', opts, {+show-hidden}
 
-  test 'interpolation' ->
+  suite 'interpolation' ->
     opts =
       prepend: 'usage {{x}}'
       options: [{heading: 'Options'}]
       append: 'version {{version}}'
 
-    q '''
-      usage {{x}}
+    test 'none' ->
+      q '''
+        usage {{x}}
 
-      Options:
+        Options:
 
-      version {{version}}
-      ''', opts
-    q '''
-      usage cmd
+        version {{version}}
+        ''', opts
 
-      Options:
+    test 'partial' ->
+      q '''
+        usage cmd
 
-      version 2
-      ''', opts, {interpolate: {x: 'cmd', version: 2}}
+        Options:
+
+        version {{version}}
+        ''', opts, {interpolate: {x: 'cmd'}}
+
+    test 'basic' ->
+      q '''
+        usage cmd
+
+        Options:
+
+        version 2
+        ''', opts, {interpolate: {x: 'cmd', version: 2}}
+
+    test 'with empty string' ->
+      q '''
+        usage 
+
+        Options:
+
+        version 
+        ''', opts, {interpolate: {x: '', version: ''}}
+
+    test 'more than once, with number' ->
+      opts =
+        prepend: 'usage {{$0}}, {{$0}}'
+        options: [{heading: 'Options'}]
+        append: '{{$0}} and {{$0}}'
+      q '''
+        usage xx, xx
+
+        Options:
+
+        xx and xx
+        ''', opts, {interpolate: {$0: 'xx'}}
 
   test 'no stdout' ->
     q '''
