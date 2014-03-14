@@ -14,7 +14,7 @@ eq = (expected-options, expected-positional, args, options, more, parse-options)
 
 suite 'misc' ->
   test 'version' ->
-    equal '0.1.0', optionator.VERSION
+    equal optionator.VERSION, (require '../package.json').version
 
 suite 'boolean flags' ->
   opts =

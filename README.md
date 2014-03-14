@@ -1,23 +1,31 @@
-# optionator
+# Optionator
 <a name="optionator" />
 
-Optionator is an option parsing and help generation library. It uses [type-check](https://github.com/gkz/type-check) and [levn](https://github.com/gkz/levn) behind the scenes to cast and verify input according the specified types. It can accept an array of arguments (like from `process.argv`), a string, or an object.
+Optionator is an option parsing and help generation library.
 
-Unlike other libraries, optionator prefers to fail with helpful error messages rather than silently accept poor input.
+## Why?
+The  problem with other option parsers, such as `yargs` or `minimist`, is they just accept all input, valid or not.
+With Optionator, if you mistype an option, it will give you an error (with a suggestion for what you meant).
+If you give the wrong type of argument for an option, it will give you an error rather than supplying the wrong input to your application.
 
     $ cmd --halp
     Invalid option '--halp' - perhaps you meant '--help'?
 
     $ cmd --count str
     Invalid value for option 'count' - expected type Int, received value: str.
-    
+
+Over helpful features include reformatting the help text based on the size of the console, so that it fits even if the console is narrow, and accepting not just an array (eg. process.argv), but a string or object as well, making things like testing much easier.
+
+## About
+Optionator uses [type-check](https://github.com/gkz/type-check) and [levn](https://github.com/gkz/levn) behind the scenes to cast and verify input according the specified types.
+
 Optionator is used by [Grasp](http://graspjs.com) and [eslint](https://github.com/eslint/eslint).
 
 MIT license. Version 0.1.1.
 
     npm install optionator
 
-For updates on optionator, [follow me on twitter](https://twitter.com/gkzahariev).
+For updates on Optionator, [follow me on twitter](https://twitter.com/gkzahariev).
 
 ## Usage
 `require('optionator');` returns a function. It has one property, `VERSION`, the current version of the library as a string. This function is called with an object specifying your options and other information, see the [settings format section](#settings-format). This in turn returns an object with three properties, `parse`, `generateHelp`, and `generateHelpForOption`, which are all functions.
@@ -41,12 +49,13 @@ var optionator = require('optionator')({
 });
 ```
 
-### parse(input, options)
+### parse(input, parseOptions)
 `parse` processes the `input` according to your settings, and returns an object with the results.
 
 ##### arguments
 * input - `[String] | Object | String` - the input you wish to parse
-* options - `{slice: Int}` - the only current option is `slice`, which specifies how much to slice away from the beginning if the input is an array or string - by default `0` for string, `2` for array (works with `process.argv`)
+* parseOptions - `{slice: Int}` - all options optional
+    - `slice` specifies how much to slice away from the beginning if the input is an array or string - by default `0` for string, `2` for array (works with `process.argv`)
 
 ##### returns
 `Object` - the parsed options, each key is a camelCase version of the option name (specified in dash-case), and each value is the processed value for that option. Positional values are in an array under the `_` key.
@@ -62,7 +71,9 @@ parse({count: 2, _:['positional']});                   // {count: 2, _: ['positi
 `generateHelp` produces help text based on your settings.
 
 ##### arguments
-* options - `{showHidden: Boolean}` - the only current option is `showHidden`, which specifies whether to show options with `hidden: true` specified, by default it is `false`
+* helpOptions - `{showHidden: Boolean, interpolate: Object}` - all options optional
+    - `showHidden` specifies whether to show options with `hidden: true` specified, by default it is `false`
+    - `interpolate` specify data to be interpolated in `prepend` and `append` text, `{{key}}` is the format - eg. `generateHelp({interpolate:{version: '0.4.2'}})`, will change this `append` text: `Version {{version}}` to `Version 0.4.2`
 
 ##### returns
 `String` - the generated help text
@@ -111,6 +122,7 @@ When your `require('optionator')`, you get a function that takes in a settings o
         default: Maybe String,
         restPositional: Maybe Boolean,
         requried: Maybe Boolean,
+        dependsOn: Maybe [String] | String
         description: Maybe String,
         longDescription: Maybe String,
         example: Maybe [String] | String
@@ -144,6 +156,7 @@ When your `require('optionator')`, you get a function that takes in a settings o
 * `default` is a optional string, which will be parsed by [levn](https://github.com/gkz/levn) and used as the default value if none is set - the value must validate against the specified `type`
 * `restPositional` is an optional boolean - if set to `true`, everything after the option will be taken to be a positional argument, even if it looks like a named argument
 * `required` is an optional boolean - if set to `true`, the option parsing will fail if the option is not defined
+* `dependsOn` is an optional string or array of strings - if simply a string (the name of another option), it will make sure that that other option is set, if an array of strings, depending on whether `'and'` or `'or'` is first, it will either check whether all (`['and', 'option-a', 'option-b']`), or at least one (`['or', 'option-a', 'option-b']`) other options are set
 * `description` is an optional string, which will be displayed next to the option in the help text
 * `longDescription` is an optional string, it will be displayed instead of the `description` when `generateHelpForOption` is used
 * `example` is an optional string or array of strings with example(s) for the option - these will be displayed when `generateHelpForOption` is used
@@ -178,5 +191,4 @@ If you specify the option `NUM`, then any argument using a single `-` followed b
 If duplicate named arguments are present, the last one will be taken.
 
 ## Technical About
-
 `optionator` is written in [LiveScript](http://livescript.net/) - a language that compiles to JavaScript. It uses [levn](https://github.com/gkz/levn) to cast arguments to their specified type, and uses [type-check](https://github.com/gkz/type-check) to validate values. It also uses the [prelude.ls](http://preludels.com/) library.

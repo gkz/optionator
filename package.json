@@ -1,8 +1,8 @@
 {
   "name": "optionator",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "George Zahariev <z@georgezahariev.com>",
-  "description": "option parsing",
+  "description": "option parsing and help generation",
   "homepage": "https://github.com/gkz/optionator",
   "keywords": "options",
   "files": [
