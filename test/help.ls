@@ -203,7 +203,7 @@ suite 'help' ->
       Options:
 
       version 2
-      ''', opts, {interpolate-data: {x: 'cmd', version: 2}}
+      ''', opts, {interpolate: {x: 'cmd', version: 2}}
 
   test 'no stdout' ->
     q '''
