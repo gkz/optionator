@@ -19,7 +19,7 @@ Over helpful features include reformatting the help text based on the size of th
 ## About
 Optionator uses [type-check](https://github.com/gkz/type-check) and [levn](https://github.com/gkz/levn) behind the scenes to cast and verify input according the specified types.
 
-Optionator is used by [Grasp](http://graspjs.com) and [eslint](https://github.com/eslint/eslint).
+Optionator is used by [Grasp](http://graspjs.com), [eslint](https://github.com/eslint/eslint), and [LiveScript](http://livescript.net).
 
 MIT license. Version 0.2.1
 
