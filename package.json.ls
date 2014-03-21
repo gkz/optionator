@@ -1,5 +1,5 @@
 name: 'optionator'
-version: '0.2.0'
+version: '0.2.1'
 
 author: 'George Zahariev <z@georgezahariev.com>'
 description: 'option parsing and help generation'
@@ -30,7 +30,7 @@ dependencies:
   'deep-is': '~0.1.2'
   wordwrap: '~0.0.2'
   'type-check': '~0.3.0'
-  levn: '~0.2.1'
+  levn: '~0.2.3'
   'levenshtein-damerau': '~0.1.0'
 
 dev-dependencies:
