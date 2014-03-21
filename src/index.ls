@@ -12,7 +12,7 @@ camelize-keys = (obj) -> {[(camelize key), value] for key, value of obj}
 parse-string = (string) ->
   assign-opt = '--?[a-zA-Z][-a-z-A-Z0-9]*='
   regex = //
-      (?:#assign-opt)?(?:'(?:[^']|\\')+'|"(?:[^"]|\\")+")
+      (?:#assign-opt)?(?:'(?:\\'|[^'])+'|"(?:\\"|[^"])+")
     | [^'"\s]+
   //g
   replace-regex = //^(#assign-opt)?['"]([\s\S]*)['"]$//
