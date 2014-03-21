@@ -21,7 +21,7 @@ Optionator uses [type-check](https://github.com/gkz/type-check) and [levn](https
 
 Optionator is used by [Grasp](http://graspjs.com), [eslint](https://github.com/eslint/eslint), and [LiveScript](http://livescript.net).
 
-MIT license. Version 0.2.1
+MIT license. Version 0.2.2
 
     npm install optionator
 
