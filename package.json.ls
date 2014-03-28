@@ -26,7 +26,7 @@ scripts:
   test: "make test"
 
 dependencies:
-  'prelude-ls': '~1.0.3'
+  'prelude-ls': '~1.1.0'
   'deep-is': '~0.1.2'
   wordwrap: '~0.0.2'
   'type-check': '~0.3.0'

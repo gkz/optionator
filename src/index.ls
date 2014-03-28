@@ -1,8 +1,8 @@
 VERSION = '0.2.2'
 
-{id, map, compact, any, group-by, chars, is-it-NaN, keys, Obj} = require 'prelude-ls'
+{id, map, compact, any, group-by, chars, is-it-NaN, keys, Obj, camelize} = require 'prelude-ls'
 deep-is = require 'deep-is'
-{closest-string, name-to-raw, camelize, dasherize} = require './util'
+{closest-string, name-to-raw, dasherize} = require './util'
 {generate-help, generate-help-for-option} = require './help'
 {parsed-type-check, parse-type} = require 'type-check'
 {parsed-type-parse: parse-levn} = require 'levn'
@@ -186,8 +186,7 @@ main = (lib-options) ->
       check-dependencies!
       set-defaults!
       check-required!
-      obj._ = input._ or []
-      return camelize-keys obj
+      return (camelize-keys obj) <<< {_: input._ or []}
     | otherwise
       throw new Error "Invalid argument to 'parse': #input."
 
@@ -261,8 +260,7 @@ main = (lib-options) ->
     check-dependencies!
     set-defaults!
     check-required!
-    obj._ = positional
-    camelize-keys obj
+    (camelize-keys obj) <<< {_: positional}
 
   parse: parse
   generate-help: generate-help lib-options
