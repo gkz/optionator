@@ -373,6 +373,22 @@ suite 'errors parsing options' ->
     throws (-> q '--cc --dd', opts, more), /The options --cc and --dd are mutually exclusive - you cannot use them at the same time/
     throws (-> q {aaAa: true, bb: true}, opts, more), /The options --aa-aa and --bb are mutually exclusive - you cannot use them at the same time/
 
+suite 'concat repeated' ->
+  opts =
+    * option: 'nums'
+      alias: 'n'
+      type: '[Number]'
+    * option: 'x'
+      type: 'Number'
+
+  more = {+concat-repeated-array}
+
+  test 'basic' ->
+    eq {nums: [1,2,3]}, [], '-n 1 -n 2 -n 3', opts, more
+
+  test 'overwrites non-array' ->
+    eq {x: 3}, [], '-x 1 -x 2 -x 3', opts, more
+
 suite 'dependency check' ->
   opts =
     * option: 'aa'

@@ -113,7 +113,13 @@ main = (lib-options) ->
         if opt.enum and not any (-> deep-is it, val), opt.parsed-possibilities
           throw new Error "Option #name: '#val' not in [#{ opt.enum.join ', ' }]."
 
-      obj[name] = val
+      if obj[name]?
+        if lib-options.concat-repeated-array and typeof! obj[name] is 'Array'
+          obj[name] ++= val
+        else
+          obj[name] = val
+      else
+        obj[name] = val
       rest-positional := true if opt.rest-positional
 
     set-defaults = !->
