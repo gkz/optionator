@@ -1,11 +1,11 @@
 {map, sort-by}:prelude = require 'prelude-ls'
-ld = require 'levenshtein-damerau'
+fl = require 'fast-levenshtein'
 
 closest-string = (possibilities, input) ->
   return unless possibilities.length
   distances = possibilities |> map ->
     [longer, shorter] = if input.length > it.length then [input, it] else [it, input]
-    {string: it, distance: ld longer, shorter}
+    {string: it, distance: fl.get longer, shorter}
 
   {string, distance} = sort-by (.distance), distances .0
   string

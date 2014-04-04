@@ -31,7 +31,7 @@ dependencies:
   wordwrap: '~0.0.2'
   'type-check': '~0.3.0'
   levn: '~0.2.3'
-  'levenshtein-damerau': '~0.1.0'
+  'fast-levenshtein': '~1.0.0'
 
 dev-dependencies:
   LiveScript: '~1.2.0'
