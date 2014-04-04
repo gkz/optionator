@@ -99,6 +99,7 @@ main = (lib-options) ->
     obj = {}
     positional = []
     rest-positional = false
+    override-required = false
     prop = null
 
     set-value = (name, value) !->
@@ -121,6 +122,7 @@ main = (lib-options) ->
       else
         obj[name] = val
       rest-positional := true if opt.rest-positional
+      override-required := true if opt.override-required
 
     set-defaults = !->
       for name, value of defaults
@@ -128,6 +130,7 @@ main = (lib-options) ->
           obj[name] = value
 
     check-required = !->
+      return if override-required
       for name in required
         throw new Error "Option #{ name-to-raw name} is required." unless obj[name]
 

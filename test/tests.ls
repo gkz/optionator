@@ -350,6 +350,18 @@ suite 'errors parsing options' ->
     eq {reqOpt: true}, [], {+reqOpt}, opts
     throws (-> q '', opts), /Option --req-opt is required/
 
+  test 'override required' ->
+    opts =
+      * option: 'req-opt'
+        type: 'Boolean'
+        required: true
+      * option: 'help'
+        type: 'Boolean'
+        override-required: true
+
+    throws (-> q '', opts), /Option --req-opt is required/
+    eq {help: true}, [], '--help', opts
+
   test 'is mutually exclusive' ->
     opts =
       * option: 'aa-aa'
