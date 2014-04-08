@@ -115,7 +115,7 @@ main = (lib-options) ->
           throw new Error "Option #name: '#val' not in [#{ opt.enum.join ', ' }]."
 
       if obj[name]?
-        if lib-options.concat-repeated-array and typeof! obj[name] is 'Array'
+        if lib-options.concat-repeated-arrays and typeof! obj[name] is 'Array'
           obj[name] ++= val
         else
           obj[name] = val

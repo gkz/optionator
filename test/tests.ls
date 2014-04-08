@@ -385,7 +385,7 @@ suite 'errors parsing options' ->
     throws (-> q '--cc --dd', opts, more), /The options --cc and --dd are mutually exclusive - you cannot use them at the same time/
     throws (-> q {aaAa: true, bb: true}, opts, more), /The options --aa-aa and --bb are mutually exclusive - you cannot use them at the same time/
 
-suite 'concat repeated' ->
+suite 'concat repeated arrays' ->
   opts =
     * option: 'nums'
       alias: 'n'
@@ -393,7 +393,7 @@ suite 'concat repeated' ->
     * option: 'x'
       type: 'Number'
 
-  more = {+concat-repeated-array}
+  more = {+concat-repeated-arrays}
 
   test 'basic' ->
     eq {nums: [1,2,3]}, [], '-n 1 -n 2 -n 3', opts, more
