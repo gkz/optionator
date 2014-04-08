@@ -21,7 +21,7 @@ Optionator uses [type-check](https://github.com/gkz/type-check) and [levn](https
 
 Optionator is used by [Grasp](http://graspjs.com), [eslint](https://github.com/eslint/eslint), and [LiveScript](http://livescript.net).
 
-MIT license. Version 0.2.2
+MIT license. Version 0.3.0
 
     npm install optionator
 
@@ -122,7 +122,8 @@ When your `require('optionator')`, you get a function that takes in a settings o
         default: Maybe String,
         restPositional: Maybe Boolean,
         requried: Maybe Boolean,
-        dependsOn: Maybe [String] | String
+        overrideRequired: Maybe Bookean,
+        dependsOn: Maybe [String] | String,
         description: Maybe String,
         longDescription: Maybe String,
         example: Maybe [String] | String
@@ -136,6 +137,7 @@ When your `require('optionator')`, you get a function that takes in a settings o
         maxPadFactor: Maybe Number
       },
       mutuallyExclusive: Maybe [[String | [String]]],
+      concatRepeatedArrays: Maybe Boolean
     }
 
 ### Top Level Properties
@@ -144,6 +146,7 @@ When your `require('optionator')`, you get a function that takes in a settings o
 * `options` is a required array specifying your options and headings, the options and headings will be displayed in the order specified
 * `helpStyle` is an optional object which enables you to change the default appearance of some aspects of the help text
 * `mutuallyExclusive` is an optional array of arrays of either strings or arrays of strings. The top level array is a list of rules, each rule is a list of elements - each element can be either a string (the name of an option), or a list of strings (a group of option names) - there will be an error if more than one element is present
+* `concatRepeatedArrays` is an optional boolean (defaults to `false`) - when set to `true` and an option contains an array value and is repeated, the subsequent values for the flag will be appended rather than overwriting the original value - eg. option `g` of type `[String]`: `-g a -g b -g c,d` will result in `['a','b','c','d']`
 
 #### Heading Properties
 * `heading` a required string, the name of the heading
@@ -156,6 +159,7 @@ When your `require('optionator')`, you get a function that takes in a settings o
 * `default` is a optional string, which will be parsed by [levn](https://github.com/gkz/levn) and used as the default value if none is set - the value must validate against the specified `type`
 * `restPositional` is an optional boolean - if set to `true`, everything after the option will be taken to be a positional argument, even if it looks like a named argument
 * `required` is an optional boolean - if set to `true`, the option parsing will fail if the option is not defined
+* `overrideRequired` is a optional boolean - if set to `true` and the option is used, and there is another option which is required but not set, it will override the need for the required option and there will be no error - this is useful if you have required options and want to use `--help` or `--version` flags
 * `dependsOn` is an optional string or array of strings - if simply a string (the name of another option), it will make sure that that other option is set, if an array of strings, depending on whether `'and'` or `'or'` is first, it will either check whether all (`['and', 'option-a', 'option-b']`), or at least one (`['or', 'option-a', 'option-b']`) other options are set
 * `description` is an optional string, which will be displayed next to the option in the help text
 * `longDescription` is an optional string, it will be displayed instead of the `description` when `generateHelpForOption` is used

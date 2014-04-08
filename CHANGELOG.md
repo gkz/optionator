@@ -1,3 +1,11 @@
+# 0.3.0
+- add `concatRepeatedArrays` setting
+- add `overrideRequired` option setting
+- use just Levenshtein string compare algo rather than Levenshtein Damerau to due depedency license issue
+
+# 0.2.2
+- bug fixes
+
 # 0.2.1
 - improved interpolation
 - added changelog
