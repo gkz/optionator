@@ -401,6 +401,28 @@ suite 'concat repeated arrays' ->
   test 'overwrites non-array' ->
     eq {x: 3}, [], '-x 1 -x 2 -x 3', opts, more
 
+suite 'merge repeated objects' ->
+  opts =
+    * option: 'config'
+      alias: 'c'
+      type: 'Object'
+    * option: 'x'
+      type: 'Number'
+
+  more = {+merge-repeated-objects}
+
+  test 'basic' ->
+    eq {config: {a: 1, b: 2, c: 3}}, [], '-c a:1 -c b:2 -c c:3', opts, more
+
+  test 'same properties' ->
+    eq {config: {a: 3}}, [], '-c a:1 -c a:2 -c a:3', opts, more
+
+  test 'multiple properties in one go' ->
+    eq {config: {a: 1, b: 2, c: 3, d: 4}}, [], '-c "a:1,b:2" -c "c: 3, d: 4"', opts, more
+
+  test 'overwrites non-array' ->
+    eq {x: 3}, [], '-x 1 -x 2 -x 3', opts, more
+
 suite 'dependency check' ->
   opts =
     * option: 'aa'

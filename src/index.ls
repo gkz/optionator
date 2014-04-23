@@ -114,9 +114,12 @@ main = (lib-options) ->
         if opt.enum and not any (-> deep-is it, val), opt.parsed-possibilities
           throw new Error "Option #name: '#val' not in [#{ opt.enum.join ', ' }]."
 
+      current-type = typeof! obj[name]
       if obj[name]?
-        if lib-options.concat-repeated-arrays and typeof! obj[name] is 'Array'
+        if lib-options.concat-repeated-arrays and current-type is 'Array'
           obj[name] ++= val
+        else if lib-options.merge-repeated-objects and current-type is 'Object'
+          obj[name] <<< val
         else
           obj[name] = val
       else
