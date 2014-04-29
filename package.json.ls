@@ -30,7 +30,7 @@ dependencies:
   'deep-is': '~0.1.2'
   wordwrap: '~0.0.2'
   'type-check': '~0.3.1'
-  levn: '~0.2.4'
+  levn: '~0.2.5'
   'fast-levenshtein': '~1.0.0'
 
 dev-dependencies:
