@@ -15,7 +15,7 @@ main: './lib/'
 bugs: 'https://github.com/gkz/optionator/issues'
 licenses:
   * type: 'MIT'
-    url: 'https://raw.github.com/gkz/optionator/master/LICENSE'
+    url: 'https://raw.githubusercontent.com/gkz/optionator/master/LICENSE'
   ...
 engines:
   node: '>= 0.8.0'
