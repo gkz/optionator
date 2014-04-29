@@ -1,3 +1,6 @@
+# 0.4.0
+- add `mergeRepeatedObjects` setting
+
 # 0.3.0
 - add `concatRepeatedArrays` setting
 - add `overrideRequired` option setting

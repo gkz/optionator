@@ -21,7 +21,7 @@ Optionator uses [type-check](https://github.com/gkz/type-check) and [levn](https
 
 Optionator is used by [Grasp](http://graspjs.com), [eslint](https://github.com/eslint/eslint), and [LiveScript](http://livescript.net).
 
-MIT license. Version 0.3.0
+MIT license. Version 0.4.0
 
     npm install optionator
 
@@ -137,7 +137,8 @@ When your `require('optionator')`, you get a function that takes in a settings o
         maxPadFactor: Maybe Number
       },
       mutuallyExclusive: Maybe [[String | [String]]],
-      concatRepeatedArrays: Maybe Boolean
+      concatRepeatedArrays: Maybe Boolean,
+      mergeRepeatedObjects: Maybe Boolean
     }
 
 ### Top Level Properties
@@ -147,6 +148,7 @@ When your `require('optionator')`, you get a function that takes in a settings o
 * `helpStyle` is an optional object which enables you to change the default appearance of some aspects of the help text
 * `mutuallyExclusive` is an optional array of arrays of either strings or arrays of strings. The top level array is a list of rules, each rule is a list of elements - each element can be either a string (the name of an option), or a list of strings (a group of option names) - there will be an error if more than one element is present
 * `concatRepeatedArrays` is an optional boolean (defaults to `false`) - when set to `true` and an option contains an array value and is repeated, the subsequent values for the flag will be appended rather than overwriting the original value - eg. option `g` of type `[String]`: `-g a -g b -g c,d` will result in `['a','b','c','d']`
+* `mergeRepeatedObjects` is an optional boolean (defaults to `false`) - when set to `true` and an option contains an object value and is repeated, the subsequent values for the flag will be merged rather than overwriting the original value - eg. option `g` of type `Object`: `-g a:1 -g b:2 -g c:3,d:4` will result in `{a: 1, b: 2, c: 3, d: 4}`
 
 #### Heading Properties
 * `heading` a required string, the name of the heading
