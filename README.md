@@ -54,8 +54,9 @@ var optionator = require('optionator')({
 
 ##### arguments
 * input - `[String] | Object | String` - the input you wish to parse
-* parseOptions - `{slice: Int}` - all options optional
+* parseOptions - `{slice: Int, initial Object}` - all options optional
     - `slice` specifies how much to slice away from the beginning if the input is an array or string - by default `0` for string, `2` for array (works with `process.argv`)
+    - `initial` specifies an initial object to begin with. Helpful if you would like to override configuration options with command line arguments.
 
 ##### returns
 `Object` - the parsed options, each key is a camelCase version of the option name (specified in dash-case), and each value is the processed value for that option. Positional values are in an array under the `_` key.
