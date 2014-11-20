@@ -239,6 +239,16 @@ suite 'defaults' ->
     eq {list: [1,2]}, [], '', opt
     eq {list: [8,9]}, [], '--list 8,9', opt
 
+  test 'number' ->
+    opt = [option: 'num', type: 'Number', default: '0']
+    eq {num: 0}, [], '', opt
+    eq {num: 1}, [], '--num 1', opt
+
+  test 'boolean' ->
+    opt = [option: 'bool', type: 'Boolean', default: 'false']
+    eq {bool: false}, [], '', opt
+    eq {bool: true}, [], '--bool', opt
+
 suite 'initial' ->
   test 'basic-initial' ->
     opt = [option: 'go', type: 'String']
