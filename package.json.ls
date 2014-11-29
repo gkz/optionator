@@ -26,7 +26,7 @@ scripts:
   test: "make test"
 
 dependencies:
-  'prelude-ls': '~1.1.0'
+  'prelude-ls': '~1.1.1'
   'deep-is': '~0.1.2'
   wordwrap: '~0.0.2'
   'type-check': '~0.3.1'
@@ -34,6 +34,6 @@ dependencies:
   'fast-levenshtein': '~1.0.0'
 
 dev-dependencies:
-  LiveScript: '~1.2.0'
+  LiveScript: '~1.3.1'
   mocha: '~1.8.2'
   istanbul: '~0.1.43'
