@@ -1,6 +1,6 @@
 VERSION = '0.4.0'
 
-{id, map, compact, any, group-by, chars, is-it-NaN, keys, Obj, camelize} = require 'prelude-ls'
+{id, map, compact, any, group-by, partition, chars, is-it-NaN, keys, Obj, camelize} = require 'prelude-ls'
 deep-is = require 'deep-is'
 {closest-string, name-to-raw, dasherize} = require './util'
 {generate-help, generate-help-for-option} = require './help'
@@ -85,6 +85,13 @@ main = (lib-options) ->
         for alias in option.aliases
           throw new Error "Option '#alias' already defined." if opts[alias]?
           opts[alias] = option
+        [short-names, long-names] = partition (.length is 1), option.aliases
+        option.short-names ?= short-names
+        option.long-names ?= long-names
+
+      if (not option.aliases or option.short-names.length is 0)
+         and option.type is 'Boolean' and option.default is 'true'
+          option.negate-name = true
 
   traverse lib-options.options
 

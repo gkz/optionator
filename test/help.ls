@@ -147,6 +147,29 @@ suite 'help' ->
       default: '2'
     }]
 
+  test 'default - boolean with true when no short alias' ->
+    q '  --no-colour', options: [{
+      option: 'colour'
+      type: 'Boolean'
+      default: 'true'
+    }]
+
+  test 'default - boolean with true when no short alias but long aliases' ->
+    q '  --no-colour, --no-color', options: [{
+      option: 'colour'
+      type: 'Boolean'
+      alias: 'color'
+      default: 'true'
+    }]
+
+  test 'default - boolean with true with short alias' ->
+    q '  -c, --colour  default: true', options: [{
+      option: 'colour'
+      alias: 'c'
+      type: 'Boolean'
+      default: 'true'
+    }]
+
   test 'many aliases' ->
     q '  -h, -H, --halp, --help  halp me', options: [{
       option: 'halp'

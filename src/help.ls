@@ -1,13 +1,16 @@
-{id, find, sort, min, max, map, partition, unlines} = require 'prelude-ls'
+{id, find, sort, min, max, map, unlines} = require 'prelude-ls'
 {name-to-raw, dasherize} = require './util'
 require! wordwrap
 
 get-pre-text = (
-  {option: main-name, aliases = [], type, description}:option,
+  {option: main-name, short-names = [], long-names = [], type, description}:option,
   {alias-separator, type-separator, initial-indent}
   max-width
 ) ->
-  [short-names, long-names] = partition (.length is 1), aliases
+  if option.negate-name
+      main-name = "no-#main-name"
+      long-names = (map (-> "no-#it"), long-names) if long-names
+
   names = if main-name.length is 1
     [main-name] ++ short-names ++ long-names
   else
@@ -47,7 +50,7 @@ generate-help-for-option = (get-option, {stdout, help-style = {}}) ->
 
     pre = get-pre-text option, help-style
 
-    default-string = if option.default
+    default-string = if option.default and not option.negate-name
       "\ndefault: #{option.default}"
     else
       ''
@@ -107,7 +110,7 @@ generate-help = ({options, prepend, append, help-style = {}, stdout}) ->
         data.push {type: 'heading', value: that}
       else
         pre = get-pre-text item, help-style, max-width
-        desc = if item.default
+        desc = if item.default and not item.negate-name
           if item.description? then "#that - default: #{item.default}" else "default: #{item.default}"
         else
           if item.description? then that else ''
