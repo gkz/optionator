@@ -7,8 +7,9 @@ q = (expected, options, args) ->
   try
     equal help-text, expected
   catch
-    console.log ''
+    console.log '# Result:'
     console.log help-text
+    console.log '# Expected:'
     console.log expected
     throw e
 
@@ -18,8 +19,9 @@ qo = (expected, option-name, options) ->
   try
     equal help-text, expected
   catch
-    console.log ''
+    console.log '# Result:'
     console.log help-text
+    console.log '# Expected:'
     console.log expected
     throw e
 
@@ -502,12 +504,13 @@ suite 'help' ->
 
     test 'rest positional' ->
       opts =
-        options: [
+        options: [{
            option: 'rest'
            type: 'Boolean'
            description: 'The rest'
            rest-positional: true
-        ]
+        }]
+        stdout: {isTTY: false}
       qo '''
          --rest
          ======
