@@ -1,3 +1,6 @@
+# 0.5.0
+- `Boolean` flags with `default: 'true'`, and no short aliases, will by default show the `--no` version in help
+
 # 0.4.0
 - add `mergeRepeatedObjects` setting
 
