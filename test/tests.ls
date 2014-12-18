@@ -239,6 +239,29 @@ suite 'defaults' ->
     eq {list: [1,2]}, [], '', opt
     eq {list: [8,9]}, [], '--list 8,9', opt
 
+  test 'number' ->
+    opt = [option: 'num', type: 'Number', default: '0']
+    eq {num: 0}, [], '', opt
+    eq {num: 1}, [], '--num 1', opt
+
+  test 'boolean' ->
+    opt = [option: 'bool', type: 'Boolean', default: 'false']
+    eq {bool: false}, [], '', opt
+    eq {bool: true}, [], '--bool', opt
+
+suite 'initial' ->
+  test 'basic-initial' ->
+    opt = [option: 'go', type: 'String']
+    more = {initial: go: 'boom'}
+    eq {go: 'boom'}, [], '', opt,, more
+    eq {go: 'haha'}, [], '--go haha', opt,, more
+
+  test 'array-initial' ->
+    opt = [option: 'list', type: 'Array']
+    more = {initial: list: [1,2]}
+    eq {list: [1,2]}, [], '', opt,, more
+    eq {list: [8,9]}, [], '--list 8,9', opt,, more
+
 suite 'array/object input' ->
   opts =
     * option: 'el'
@@ -401,6 +424,47 @@ suite 'concat repeated arrays' ->
   test 'overwrites non-array' ->
     eq {x: 3}, [], '-x 1 -x 2 -x 3', opts, more
 
+suite 'merge repeated objects with initial' ->
+  opts =
+    * option: 'config'
+      alias: 'c'
+      type: 'Object'
+    * option: 'x'
+      type: 'Number'
+    * option: 'b'
+      type: 'Boolean'
+
+  more = {+merge-repeated-objects}
+
+  test 'basic' ->
+    eq {config: {a: 4, b: 5, c: 6}}, [], '-c a:4 -c b:5 -c c:6', opts, more, {initial: config: {a: 1, b: 2}}
+
+  test 'same properties' ->
+    eq {config: {a: 0, b: 2}}, [], '-c a:1 -c a:2 -c a:0', opts, more, {initial: config: {a: 1, b: 2}}
+
+  test 'multiple properties in one go' ->
+    eq {config: {a: 1, b: 2, c: 3, d: 4}}, [], '-c "c: 3, d: 4"', opts, more, {initial: config: {a: 1, b: 2}}
+
+  test 'overwrites non-array' ->
+    eq {config: {a: 1, b: 2}, x: 0}, [], '-x 1 -x 2 -x 0', opts, more, {initial: config: {a: 1, b: 2}}
+
+suite 'concat repeated arrays and merge repeated objects' ->
+  opts =
+    * option: 'nums'
+      alias: 'n'
+      type: '[Number]'
+    * option: 'x'
+      type: 'Number'
+
+  more = {+concat-repeated-arrays, +merge-repeated-objects}
+
+  test 'basic' ->
+    eq {nums: [1,2,3,4,5,6]}, [], '-n 4 -n 5 -n 6', opts, more, {initial: nums: [1,2,3]}
+
+  test 'overwrites non-array' ->
+    eq {x: 3, nums: [1,2,3]}, [], '-x 1 -x 2 -x 3', opts, more, {initial: nums: [1,2,3]}
+
+
 suite 'merge repeated objects' ->
   opts =
     * option: 'config'
@@ -416,6 +480,9 @@ suite 'merge repeated objects' ->
 
   test 'same properties' ->
     eq {config: {a: 3}}, [], '-c a:1 -c a:2 -c a:3', opts, more
+
+  test 'same properties with falsy value' ->
+    eq {config: {a: 0}}, [], '-c a:1 -c a:2 -c a:0', opts, more
 
   test 'multiple properties in one go' ->
     eq {config: {a: 1, b: 2, c: 3, d: 4}}, [], '-c "a:1,b:2" -c "c: 3, d: 4"', opts, more

@@ -102,8 +102,9 @@ main = (lib-options) ->
       throw new Error "Invalid option '#{ name-to-raw name}'#{ if possibly-meant then " - perhaps you meant '#{ name-to-raw possibly-meant }'?" else '.'}"
     opt
 
-  parse = (input, {slice} = {}) ->
+  parse = (input, {slice, initial} = {}) ->
     obj = {}
+    obj <<< initial if initial
     positional = []
     rest-positional = false
     override-required = false
