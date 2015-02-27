@@ -121,7 +121,7 @@ When your `require('optionator')`, you get a function that takes in a settings o
         enum: Maybe [String],
         default: Maybe String,
         restPositional: Maybe Boolean,
-        requried: Maybe Boolean,
+        required: Maybe Boolean,
         overrideRequired: Maybe Bookean,
         dependsOn: Maybe [String] | String,
         description: Maybe String,
@@ -197,4 +197,4 @@ If you specify the option `NUM`, then any argument using a single `-` followed b
 If duplicate named arguments are present, the last one will be taken.
 
 ## Technical About
-`optionator` is written in [LiveScript](http://livescript.net/) - a language that compiles to JavaScript. It uses [levn](https://github.com/gkz/levn) to cast arguments to their specified type, and uses [type-check](https://github.com/gkz/type-check) to validate values. It also uses the [prelude.ls](http://preludels.com/) library.
+`optionator` is written in [LiveScript](http://livescript.net/) - a language that compiles to JavaScript. It uses [levn](https://github.com/gkz/levn) to cast arguments to their specified type, and uses [type-check](https://github.com/gkz/type-check) to validate values. It also uses the [prelude.ls](http://preludels.com/) libraryr.
