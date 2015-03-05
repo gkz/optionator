@@ -205,8 +205,15 @@ suite 'positional' ->
   test 'basic' ->
     eq {}, ['boom'], 'boom', opts
 
-  test 'anywehre' ->
+  test 'anywhere' ->
     eq {flag: true, cc: 42}, ['boom', '2', 'hi'], 'boom --flag 2 --cc 42 hi', opts
+
+  test 'not anywhere' ->
+    deep-equal {
+        flag: true,
+        cc: 42,
+        _: ['hi', '--xx']
+    }, q '--flag --cc 42 hi --xx', opts, {positional-anywhere: false}
 
   test '--' ->
     eq {flag: true}, ['--flag', '2', 'boom'], '--flag -- --flag 2 boom', opts

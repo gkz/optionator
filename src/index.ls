@@ -26,6 +26,8 @@ main = (lib-options) ->
   if typeof! lib-options.stdout is 'Undefined'
     lib-options.stdout = process.stdout
 
+  lib-options.positional-anywhere ?= true
+
   traverse = (options) !->
     throw new Error 'No options defined.' unless typeof! options is 'Array'
 
@@ -274,6 +276,7 @@ main = (lib-options) ->
             prop := null
           else
             positional.push arg
+            rest-positional := true if not lib-options.positional-anywhere
 
     check-mutually-exclusive!
     check-dependencies!
