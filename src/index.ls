@@ -27,6 +27,9 @@ main = (lib-options) ->
     lib-options.stdout = process.stdout
 
   lib-options.positional-anywhere ?= true
+  lib-options.defaults ?= {}
+  lib-options.defaults.concat-repeated-arrays = lib-options.concat-repeated-arrays
+  lib-options.defaults.merge-repeated-objects = lib-options.merge-repeated-objects
 
   traverse = (options) !->
     throw new Error 'No options defined.' unless typeof! options is 'Array'
@@ -34,6 +37,9 @@ main = (lib-options) ->
     for option in options when not option.heading?
       name = option.option
       throw new Error "Option '#name' already defined." if opts[name]?
+
+      for k, v of lib-options.defaults
+        option[k] ?= v
 
       option.boolean ?= true if option.type is 'Boolean'
 
@@ -125,9 +131,9 @@ main = (lib-options) ->
 
       current-type = typeof! obj[name]
       if obj[name]?
-        if lib-options.concat-repeated-arrays and current-type is 'Array'
+        if opt.concat-repeated-arrays and current-type is 'Array'
           obj[name] ++= val
-        else if lib-options.merge-repeated-objects and current-type is 'Object'
+        else if opt.merge-repeated-objects and current-type is 'Object'
           obj[name] <<< val
         else
           obj[name] = val

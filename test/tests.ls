@@ -404,6 +404,17 @@ suite 'concat repeated arrays' ->
   test 'overwrites non-array' ->
     eq {x: 3}, [], '-x 1 -x 2 -x 3', opts, more
 
+  opts2 =
+    * option: 'x'
+      type: '[Number]'
+      concat-repeated-arrays: true
+    * option: 'y'
+      type: '[Number]'
+
+  test 'per option' ->
+    eq {x: [1, 2, 3]}, [], '-x 1 -x 2 -x 3', opts2
+    eq {y: [3]}, [], '-y 1 -y 2 -y 3', opts2
+
 suite 'merge repeated objects' ->
   opts =
     * option: 'config'
@@ -425,6 +436,17 @@ suite 'merge repeated objects' ->
 
   test 'overwrites non-array' ->
     eq {x: 3}, [], '-x 1 -x 2 -x 3', opts, more
+
+  opts2 =
+    * option: 'c'
+      type: 'Object'
+      merge-repeated-objects: true
+    * option: 'd'
+      type: 'Object'
+
+  test 'per option' ->
+    eq {c: {a: 1, b: 2, c: 3}}, [], '-c a:1 -c b:2 -c c:3', opts2
+    eq {d: {c: 3}}, [], '-d a:1 -d b:2 -d c:3', opts2
 
 suite 'dependency check' ->
   opts =
@@ -490,6 +512,19 @@ suite 'dependency check' ->
     ]
 
     throws (-> q '--fail', opts), /Option 'fail': If you have more than one dependency, you must specify either 'and' or 'or'/
+
+suite 'option defaults' ->
+  opts =
+    * option: 'a'
+    * option: 'b'
+
+  more =
+    defaults:
+      type: 'Number'
+
+  test 'basic' ->
+    eq {a: 5}, [], '-a 5', opts, more
+    eq {b: 5}, [], '-b 5', opts, more
 
 suite 'heading' ->
   opts =
