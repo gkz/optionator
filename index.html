@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Optionator by gkz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Optionator</h1>
+      <h2 class="project-tagline">JS option parsing and help generation library</h2>
+      <a href="https://github.com/gkz/optionator" class="btn">View on GitHub</a>
+      <a href="https://github.com/gkz/optionator/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/gkz/optionator/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="optionator" class="anchor" href="#optionator" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optionator</h1>
+
+<p><a name="optionator"></a></p>
+
+<p>Optionator is an option parsing and help generation library.</p>
+
+<h2>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?</h2>
+
+<p>The  problem with other option parsers, such as <code>yargs</code> or <code>minimist</code>, is they just accept all input, valid or not.
+With Optionator, if you mistype an option, it will give you an error (with a suggestion for what you meant).
+If you give the wrong type of argument for an option, it will give you an error rather than supplying the wrong input to your application.</p>
+
+<pre><code>$ cmd --halp
+Invalid option '--halp' - perhaps you meant '--help'?
+
+$ cmd --count str
+Invalid value for option 'count' - expected type Int, received value: str.
+</code></pre>
+
+<p>Over helpful features include reformatting the help text based on the size of the console, so that it fits even if the console is narrow, and accepting not just an array (eg. process.argv), but a string or object as well, making things like testing much easier.</p>
+
+<h2>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>Optionator uses <a href="https://github.com/gkz/type-check">type-check</a> and <a href="https://github.com/gkz/levn">levn</a> behind the scenes to cast and verify input according the specified types.</p>
+
+<p>Optionator is used by <a href="http://graspjs.com">Grasp</a>, <a href="http://eslint.org">eslint</a>, <a href="http://livescript.net">LiveScript</a>, <a href="https://github.com/estools/esmangle">esmangle</a>, <a href="https://github.com/estools/escodegen">escodegen</a>, and more.</p>
+
+<p>MIT license. Version 0.5.0</p>
+
+<pre><code>npm install optionator
+</code></pre>
+
+<p>For updates on Optionator, <a href="https://twitter.com/gkzahariev">follow me on twitter</a>.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p><code>require('optionator');</code> returns a function. It has one property, <code>VERSION</code>, the current version of the library as a string. This function is called with an object specifying your options and other information, see the <a href="#settings-format">settings format section</a>. This in turn returns an object with three properties, <code>parse</code>, <code>generateHelp</code>, and <code>generateHelpForOption</code>, which are all functions.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> optionator <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>optionator<span class="pl-pds">'</span></span>)({
+  prepend<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Usage: cmd [options]<span class="pl-pds">'</span></span>,
+  append<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Version 1.0.0<span class="pl-pds">'</span></span>,
+  options<span class="pl-k">:</span> [{
+    option<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>help<span class="pl-pds">'</span></span>,
+    alias<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>h<span class="pl-pds">'</span></span>,
+    type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Boolean<span class="pl-pds">'</span></span>,
+    description<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>displays help<span class="pl-pds">'</span></span>
+  }, {
+    option<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>count<span class="pl-pds">'</span></span>,
+    alias<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>c<span class="pl-pds">'</span></span>,
+    type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Int<span class="pl-pds">'</span></span>,
+    description<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>number of things<span class="pl-pds">'</span></span>,
+    example<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>cmd --count 2<span class="pl-pds">'</span></span>
+  }]
+});</pre></div>
+
+<h3>
+<a id="parseinput-parseoptions" class="anchor" href="#parseinput-parseoptions" aria-hidden="true"><span class="octicon octicon-link"></span></a>parse(input, parseOptions)</h3>
+
+<p><code>parse</code> processes the <code>input</code> according to your settings, and returns an object with the results.</p>
+
+<h5>
+<a id="arguments" class="anchor" href="#arguments" aria-hidden="true"><span class="octicon octicon-link"></span></a>arguments</h5>
+
+<ul>
+<li>input - <code>[String] | Object | String</code> - the input you wish to parse</li>
+<li>parseOptions - <code>{slice: Int}</code> - all options optional
+
+<ul>
+<li>
+<code>slice</code> specifies how much to slice away from the beginning if the input is an array or string - by default <code>0</code> for string, <code>2</code> for array (works with <code>process.argv</code>)</li>
+</ul>
+</li>
+</ul>
+
+<h5>
+<a id="returns" class="anchor" href="#returns" aria-hidden="true"><span class="octicon octicon-link"></span></a>returns</h5>
+
+<p><code>Object</code> - the parsed options, each key is a camelCase version of the option name (specified in dash-case), and each value is the processed value for that option. Positional values are in an array under the <code>_</code> key.</p>
+
+<h5>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>example</h5>
+
+<div class="highlight highlight-js"><pre><span class="pl-c1">parse</span>([<span class="pl-s"><span class="pl-pds">'</span>node<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>t.js<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>--count<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>2<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>positional<span class="pl-pds">'</span></span>]); <span class="pl-c">// {count: 2, _: ['positional']}</span>
+<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>--count 2 positional<span class="pl-pds">'</span></span>);                         <span class="pl-c">// {count: 2, _: ['positional']}</span>
+<span class="pl-c1">parse</span>({count<span class="pl-k">:</span> <span class="pl-c1">2</span>, _<span class="pl-k">:</span>[<span class="pl-s"><span class="pl-pds">'</span>positional<span class="pl-pds">'</span></span>]});                   <span class="pl-c">// {count: 2, _: ['positional']}</span></pre></div>
+
+<h3>
+<a id="generatehelphelpoptions" class="anchor" href="#generatehelphelpoptions" aria-hidden="true"><span class="octicon octicon-link"></span></a>generateHelp(helpOptions)</h3>
+
+<p><code>generateHelp</code> produces help text based on your settings.</p>
+
+<h5>
+<a id="arguments-1" class="anchor" href="#arguments-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>arguments</h5>
+
+<ul>
+<li>helpOptions - <code>{showHidden: Boolean, interpolate: Object}</code> - all options optional
+
+<ul>
+<li>
+<code>showHidden</code> specifies whether to show options with <code>hidden: true</code> specified, by default it is <code>false</code>
+</li>
+<li>
+<code>interpolate</code> specify data to be interpolated in <code>prepend</code> and <code>append</code> text, <code>{{key}}</code> is the format - eg. <code>generateHelp({interpolate:{version: '0.4.2'}})</code>, will change this <code>append</code> text: <code>Version {{version}}</code> to <code>Version 0.4.2</code>
+</li>
+</ul>
+</li>
+</ul>
+
+<h5>
+<a id="returns-1" class="anchor" href="#returns-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>returns</h5>
+
+<p><code>String</code> - the generated help text</p>
+
+<h5>
+<a id="example-1" class="anchor" href="#example-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>example</h5>
+
+<div class="highlight highlight-js"><pre>generateHelp(); <span class="pl-c">/*</span>
+<span class="pl-c">"Usage: cmd [options] positional</span>
+<span class="pl-c"></span>
+<span class="pl-c">  -h, --help       displays help</span>
+<span class="pl-c">  -c, --count Int  number of things</span>
+<span class="pl-c"></span>
+<span class="pl-c">Version  1.0.0</span>
+<span class="pl-c">"*/</span></pre></div>
+
+<h3>
+<a id="generatehelpforoptionoptionname" class="anchor" href="#generatehelpforoptionoptionname" aria-hidden="true"><span class="octicon octicon-link"></span></a>generateHelpForOption(optionName)</h3>
+
+<p><code>generateHelpForOption</code> produces expanded help text for the specified with <code>optionName</code> option. If an <code>example</code> was specified for the option, it will be displayed,  and if a <code>longDescription</code> was specified, it will display that instead of the <code>description</code>.</p>
+
+<h5>
+<a id="arguments-2" class="anchor" href="#arguments-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>arguments</h5>
+
+<ul>
+<li>optionName - <code>String</code> - the name of the option to display</li>
+</ul>
+
+<h5>
+<a id="returns-2" class="anchor" href="#returns-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>returns</h5>
+
+<p><code>String</code> - the generated help text for the option</p>
+
+<h5>
+<a id="example-2" class="anchor" href="#example-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>example</h5>
+
+<div class="highlight highlight-js"><pre>generateHelpForOption(<span class="pl-s"><span class="pl-pds">'</span>count<span class="pl-pds">'</span></span>); <span class="pl-c">/*</span>
+<span class="pl-c">"-c, --count Int</span>
+<span class="pl-c">description: number of things</span>
+<span class="pl-c">example: cmd --count 2</span>
+<span class="pl-c">"*/</span></pre></div>
+
+<h2>
+<a id="settings-format" class="anchor" href="#settings-format" aria-hidden="true"><span class="octicon octicon-link"></span></a>Settings Format</h2>
+
+<p>When your <code>require('optionator')</code>, you get a function that takes in a settings object. This object has the type:</p>
+
+<pre><code>{
+  prepend: Maybe String,
+  append: Maybe String,
+  options: [{heading: String} | {
+    option: String,
+    alias: Maybe [String] | String,
+    type: Maybe String,
+    enum: Maybe [String],
+    default: Maybe String,
+    restPositional: Maybe Boolean,
+    required: Maybe Boolean,
+    overrideRequired: Maybe Boolean,
+    dependsOn: Maybe [String] | String,
+    description: Maybe String,
+    longDescription: Maybe String,
+    example: Maybe [String] | String
+  }],
+  helpStyle: Maybe {
+    aliasSeparator: Maybe String,
+    typeSeparator: Maybe String,
+    descriptionSeparator: Maybe String,
+    initialIndent: Maybe Int,
+    secondaryIndent: Maybe Int,
+    maxPadFactor: Maybe Number
+  },
+  mutuallyExclusive: Maybe [[String | [String]]],
+  concatRepeatedArrays: Maybe Boolean,
+  mergeRepeatedObjects: Maybe Boolean
+}
+</code></pre>
+
+<h3>
+<a id="top-level-properties" class="anchor" href="#top-level-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Top Level Properties</h3>
+
+<ul>
+<li>
+<code>prepend</code> is an optional string to be placed before the options in the help text</li>
+<li>
+<code>append</code> is an optional string to be placed after the options in the help text</li>
+<li>
+<code>options</code> is a required array specifying your options and headings, the options and headings will be displayed in the order specified</li>
+<li>
+<code>helpStyle</code> is an optional object which enables you to change the default appearance of some aspects of the help text</li>
+<li>
+<code>mutuallyExclusive</code> is an optional array of arrays of either strings or arrays of strings. The top level array is a list of rules, each rule is a list of elements - each element can be either a string (the name of an option), or a list of strings (a group of option names) - there will be an error if more than one element is present</li>
+<li>
+<code>concatRepeatedArrays</code> is an optional boolean (defaults to <code>false</code>) - when set to <code>true</code> and an option contains an array value and is repeated, the subsequent values for the flag will be appended rather than overwriting the original value - eg. option <code>g</code> of type <code>[String]</code>: <code>-g a -g b -g c,d</code> will result in <code>['a','b','c','d']</code>
+</li>
+<li>
+<code>mergeRepeatedObjects</code> is an optional boolean (defaults to <code>false</code>) - when set to <code>true</code> and an option contains an object value and is repeated, the subsequent values for the flag will be merged rather than overwriting the original value - eg. option <code>g</code> of type <code>Object</code>: <code>-g a:1 -g b:2 -g c:3,d:4</code> will result in <code>{a: 1, b: 2, c: 3, d: 4}</code>
+</li>
+</ul>
+
+<h4>
+<a id="heading-properties" class="anchor" href="#heading-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Heading Properties</h4>
+
+<ul>
+<li>
+<code>heading</code> a required string, the name of the heading</li>
+</ul>
+
+<h4>
+<a id="option-properties" class="anchor" href="#option-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Option Properties</h4>
+
+<ul>
+<li>
+<code>option</code> the required name of the option - use dash-case, without the leading dashes</li>
+<li>
+<code>alias</code> is an optional string or array of strings which specify any aliases for the option</li>
+<li>
+<code>type</code> is a required string in the <a href="https://github.com/gkz/type-check">type check</a> <a href="https://github.com/gkz/type-check#type-format">format</a>, this will be used to cast the inputted value and validate it</li>
+<li>
+<code>enum</code> is an optional array of strings, each string will be parsed by <a href="https://github.com/gkz/levn">levn</a> - the argument value must be one of the resulting values - each potential value must validate against the specified <code>type</code>
+</li>
+<li>
+<code>default</code> is a optional string, which will be parsed by <a href="https://github.com/gkz/levn">levn</a> and used as the default value if none is set - the value must validate against the specified <code>type</code>
+</li>
+<li>
+<code>restPositional</code> is an optional boolean - if set to <code>true</code>, everything after the option will be taken to be a positional argument, even if it looks like a named argument</li>
+<li>
+<code>required</code> is an optional boolean - if set to <code>true</code>, the option parsing will fail if the option is not defined</li>
+<li>
+<code>overrideRequired</code> is a optional boolean - if set to <code>true</code> and the option is used, and there is another option which is required but not set, it will override the need for the required option and there will be no error - this is useful if you have required options and want to use <code>--help</code> or <code>--version</code> flags</li>
+<li>
+<code>dependsOn</code> is an optional string or array of strings - if simply a string (the name of another option), it will make sure that that other option is set, if an array of strings, depending on whether <code>'and'</code> or <code>'or'</code> is first, it will either check whether all (<code>['and', 'option-a', 'option-b']</code>), or at least one (<code>['or', 'option-a', 'option-b']</code>) other options are set</li>
+<li>
+<code>description</code> is an optional string, which will be displayed next to the option in the help text</li>
+<li>
+<code>longDescription</code> is an optional string, it will be displayed instead of the <code>description</code> when <code>generateHelpForOption</code> is used</li>
+<li>
+<code>example</code> is an optional string or array of strings with example(s) for the option - these will be displayed when <code>generateHelpForOption</code> is used</li>
+</ul>
+
+<h4>
+<a id="help-style-properties" class="anchor" href="#help-style-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help Style Properties</h4>
+
+<ul>
+<li>
+<code>aliasSeparator</code> is an optional string, separates multiple names from each other - default: ' ,'</li>
+<li>
+<code>typeSeparator</code> is an optional string, separates the type from the names - default: ' '</li>
+<li>
+<code>descriptionSeparator</code> is an optional string , separates the description from the padded name and type - default: '  '</li>
+<li>
+<code>initialIndent</code> is an optional int - the amount of indent for options - default: 2</li>
+<li>
+<code>secondaryIndent</code> is an optional int - the amount of indent if wrapped fully (in addition to the initial indent) - default: 4</li>
+<li>
+<code>maxPadFactor</code> is an optional number - affects the default level of padding for the names/type, it is multiplied by the average of the length of the names/type - default: 1.5</li>
+</ul>
+
+<h2>
+<a id="argument-format" class="anchor" href="#argument-format" aria-hidden="true"><span class="octicon octicon-link"></span></a>Argument Format</h2>
+
+<p>At the highest level there are two types of arguments: named, and positional.</p>
+
+<p>Name arguments of any length are prefixed with <code>--</code> (eg. <code>--go</code>), and those of one character may be prefixed with either <code>--</code> or <code>-</code> (eg. <code>-g</code>).</p>
+
+<p>There are two types of named arguments: boolean flags (eg. <code>--problemo</code>, <code>-p</code>) which take no value and result in a <code>true</code> if they are present, the falsey <code>undefined</code> if they are not present, or <code>false</code> if present and explicitly prefixed with <code>no</code> (eg. <code>--no-problemo</code>). Named arguments with values (eg. <code>--tseries 800</code>, <code>-t 800</code>) are the other type. If the option has a type <code>Boolean</code> it will automatically be made into a boolean flag. Any other type results in a named argument that takes a value.</p>
+
+<p>For more information about how to properly set types to get the value you want, take a look at the <a href="https://github.com/gkz/type-check">type check</a> and <a href="https://github.com/gkz/levn">levn</a> pages.</p>
+
+<p>You can group single character arguments that use a single <code>-</code>, however all except the last must be boolean flags (which take no value). The last may be a boolean flag, or an argument which takes a value - eg. <code>-ba 2</code> is equivalent to <code>-b -a 2</code>.</p>
+
+<p>Positional arguments are all those values which do not fall under the above - they can be anywhere, not just at the end. For example, in <code>cmd -b one -a 2 two</code> where <code>b</code> is a boolean flag, and <code>a</code> has the type <code>Number</code>, there are two positional arguments, <code>one</code> and <code>two</code>.</p>
+
+<p>Everything after an <code>--</code> is positional, even if it looks like a named argument.</p>
+
+<p>You may optionally use <code>=</code> to separate option names from values, for example: <code>--count=2</code>.</p>
+
+<p>If you specify the option <code>NUM</code>, then any argument using a single <code>-</code> followed by a number will be valid and will set the value of <code>NUM</code>. Eg. <code>-2</code> will be parsed into <code>NUM: 2</code>.</p>
+
+<p>If duplicate named arguments are present, the last one will be taken.</p>
+
+<h2>
+<a id="technical-about" class="anchor" href="#technical-about" aria-hidden="true"><span class="octicon octicon-link"></span></a>Technical About</h2>
+
+<p><code>optionator</code> is written in <a href="http://livescript.net/">LiveScript</a> - a language that compiles to JavaScript. It uses <a href="https://github.com/gkz/levn">levn</a> to cast arguments to their specified type, and uses <a href="https://github.com/gkz/type-check">type-check</a> to validate values. It also uses the <a href="http://preludels.com/">prelude.ls</a> library.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/gkz/optionator">Optionator</a> is maintained by <a href="https://github.com/gkz">gkz</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-7402515-8");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
+
