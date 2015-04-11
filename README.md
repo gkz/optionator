@@ -1,7 +1,9 @@
 # Optionator
 <a name="optionator" />
 
-Optionator is an option parsing and help generation library.
+Optionator is a JavaScript option parsing and help generation library used by [eslint](http://eslint.org), [Grasp](http://graspjs.com), [LiveScript](http://livescript.net), [esmangle](https://github.com/estools/esmangle), [escodegen](https://github.com/estools/escodegen), and [many more](https://www.npmjs.com/browse/depended/optionator).
+
+[About](#about) &middot; [Usage](#usage) &middot; [Settings Format](#settings-format) &middot; [Argument Format](#argument-format)
 
 ## Why?
 The  problem with other option parsers, such as `yargs` or `minimist`, is they just accept all input, valid or not.
@@ -18,8 +20,6 @@ Over helpful features include reformatting the help text based on the size of th
 
 ## About
 Optionator uses [type-check](https://github.com/gkz/type-check) and [levn](https://github.com/gkz/levn) behind the scenes to cast and verify input according the specified types.
-
-Optionator is used by [Grasp](http://graspjs.com), [eslint](http://eslint.org), [LiveScript](http://livescript.net), [esmangle](https://github.com/estools/esmangle), [escodegen](https://github.com/estools/escodegen), and more.
 
 MIT license. Version 0.5.0
 
