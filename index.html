@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Optionator - JavaScript option parsing and help generation</title>
+    <title>Optionator by gkz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -10,15 +10,12 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-
     <section class="page-header">
       <h1 class="project-name">Optionator</h1>
-      <h2 class="project-tagline">JavaScript option parsing and help generation library</h2>
-      <iframe src="https://ghbtns.com/github-btn.html?user=gkz&repo=optionator&type=star&count=true&size=large" frameborder="0" scrolling="0" width="140px" height="30px"></iframe>
+      <h2 class="project-tagline">JS option parsing and help generation library</h2>
       <a href="https://github.com/gkz/optionator" class="btn">View on GitHub</a>
-      <span class="twitter-button">
-        <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-via="gkzahariev" data-related="gkzahariev:The author - follow for updates on Optionator" data-size="large">Tweet</a>
-      </span>
+      <a href="https://github.com/gkz/optionator/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/gkz/optionator/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
@@ -27,14 +24,7 @@
 
 <p><a name="optionator"></a></p>
 
-<p>Optionator is a JavaScript option parsing and help generation library used by <a href="http://eslint.org">eslint</a>, <a href="http://graspjs.com">Grasp</a>, <a href="http://livescript.net">LiveScript</a>, <a href="https://github.com/estools/esmangle">esmangle</a>, <a href="https://github.com/estools/escodegen">escodegen</a>, and <a href="https://www.npmjs.com/browse/depended/optionator">many more</a>.</p>
-
-<div class="nav-links">
-    <a href="#about">About</a> &middot;
-    <a href="#usage">Usage</a> &middot;
-    <a href="#settings-format">Settings Format</a> &middot;
-    <a href="#argument-format">Argument Format</a>
-</div>
+<p>Optionator is an option parsing and help generation library.</p>
 
 <h2>
 <a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?</h2>
@@ -57,15 +47,14 @@ Invalid value for option 'count' - expected type Int, received value: str.
 
 <p>Optionator uses <a href="https://github.com/gkz/type-check">type-check</a> and <a href="https://github.com/gkz/levn">levn</a> behind the scenes to cast and verify input according the specified types.</p>
 
+<p>Optionator is used by <a href="http://graspjs.com">Grasp</a>, <a href="http://eslint.org">eslint</a>, <a href="http://livescript.net">LiveScript</a>, <a href="https://github.com/estools/esmangle">esmangle</a>, <a href="https://github.com/estools/escodegen">escodegen</a>, and more.</p>
+
 <p>MIT license. Version 0.5.0</p>
 
 <pre><code>npm install optionator
 </code></pre>
 
-<p>For updates on Optionator, <a href="https://twitter.com/gkzahariev" class="twitter-follow-button" data-show-count="false" data-lang="en" data-size="large">Follow @gkzahariev</a>
-</p>
-
-
+<p>For updates on Optionator, <a href="https://twitter.com/gkzahariev">follow me on twitter</a>.</p>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -348,7 +337,6 @@ Invalid value for option 'count' - expected type Int, received value: str.
             } catch(err) {}
           </script>
 
-          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
   </body>
 </html>
 
