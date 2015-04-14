@@ -18,7 +18,7 @@ If you give the wrong type of argument for an option, it will give you an error 
     $ cmd --count str
     Invalid value for option 'count' - expected type Int, received value: str.
 
-Over helpful features include reformatting the help text based on the size of the console, so that it fits even if the console is narrow, and accepting not just an array (eg. process.argv), but a string or object as well, making things like testing much easier.
+Other helpful features include reformatting the help text based on the size of the console, so that it fits even if the console is narrow, and accepting not just an array (eg. process.argv), but a string or object as well, making things like testing much easier.
 
 ## About
 Optionator uses [type-check](https://github.com/gkz/type-check) and [levn](https://github.com/gkz/levn) behind the scenes to cast and verify input according the specified types.
