@@ -12,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Optionator</h1>
-      <h2 class="project-tagline">JS option parsing and help generation library</h2>
+      <h2 class="project-tagline">JavaScript option parsing and help generation library</h2>
       <a href="https://github.com/gkz/optionator" class="btn">View on GitHub</a>
       <a href="https://github.com/gkz/optionator/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/gkz/optionator/tarball/master" class="btn">Download .tar.gz</a>
@@ -24,7 +24,11 @@
 
 <p><a name="optionator"></a></p>
 
-<p>Optionator is an option parsing and help generation library.</p>
+<p>Optionator is a JavaScript option parsing and help generation library used by <a href="http://eslint.org">eslint</a>, <a href="http://graspjs.com">Grasp</a>, <a href="http://livescript.net">LiveScript</a>, <a href="https://github.com/estools/esmangle">esmangle</a>, <a href="https://github.com/estools/escodegen">escodegen</a>, and <a href="https://www.npmjs.com/browse/depended/optionator">many more</a>.</p>
+
+<p>For an online demo, check out the <a href="http://www.graspjs.com/#demo">Grasp online demo</a>.</p>
+
+<p><a href="#about">About</a> · <a href="#usage">Usage</a> · <a href="#settings-format">Settings Format</a> · <a href="#argument-format">Argument Format</a></p>
 
 <h2>
 <a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?</h2>
@@ -47,9 +51,7 @@ Invalid value for option 'count' - expected type Int, received value: str.
 
 <p>Optionator uses <a href="https://github.com/gkz/type-check">type-check</a> and <a href="https://github.com/gkz/levn">levn</a> behind the scenes to cast and verify input according the specified types.</p>
 
-<p>Optionator is used by <a href="http://graspjs.com">Grasp</a>, <a href="http://eslint.org">eslint</a>, <a href="http://livescript.net">LiveScript</a>, <a href="https://github.com/estools/esmangle">esmangle</a>, <a href="https://github.com/estools/escodegen">escodegen</a>, and more.</p>
-
-<p>MIT license. Version 0.5.0</p>
+<p>MIT license. Version 0.6.0</p>
 
 <pre><code>npm install optionator
 </code></pre>
@@ -180,35 +182,41 @@ Invalid value for option 'count' - expected type Int, received value: str.
 <p>When your <code>require('optionator')</code>, you get a function that takes in a settings object. This object has the type:</p>
 
 <pre><code>{
-  prepend: Maybe String,
-  append: Maybe String,
+  prepend: String,
+  append: String,
   options: [{heading: String} | {
     option: String,
-    alias: Maybe [String] | String,
-    type: Maybe String,
-    enum: Maybe [String],
-    default: Maybe String,
-    restPositional: Maybe Boolean,
-    required: Maybe Boolean,
-    overrideRequired: Maybe Boolean,
-    dependsOn: Maybe [String] | String,
-    description: Maybe String,
-    longDescription: Maybe String,
-    example: Maybe [String] | String
+    alias: [String] | String,
+    type: String,
+    enum: [String],
+    default: String,
+    restPositional: Boolean,
+    required: Boolean,
+    overrideRequired: Boolean,
+    dependsOn: [String] | String,
+    concatRepeatedArrays: Boolean,
+    mergeRepeatedObjects: Boolean,
+    description: String,
+    longDescription: String,
+    example: [String] | String
   }],
-  helpStyle: Maybe {
-    aliasSeparator: Maybe String,
-    typeSeparator: Maybe String,
-    descriptionSeparator: Maybe String,
-    initialIndent: Maybe Int,
-    secondaryIndent: Maybe Int,
-    maxPadFactor: Maybe Number
+  helpStyle: {
+    aliasSeparator: String,
+    typeSeparator: String,
+    descriptionSeparator: String,
+    initialIndent: Int,
+    secondaryIndent: Int,
+    maxPadFactor: Number
   },
-  mutuallyExclusive: Maybe [[String | [String]]],
-  concatRepeatedArrays: Maybe Boolean,
-  mergeRepeatedObjects: Maybe Boolean
+  mutuallyExclusive: [[String | [String]]],
+  concatRepeatedArrays: Boolean,
+  mergeRepeatedObjects: Boolean,
+  positionalAnywhere: Boolean,
+  defaults: Object
 }
 </code></pre>
+
+<p>All of the properties are optional (the <code>Maybe</code> has been excluded for brevities sake), except for having either <code>heading: String</code> or <code>option: String</code> in each object in the <code>options</code> array.</p>
 
 <h3>
 <a id="top-level-properties" class="anchor" href="#top-level-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Top Level Properties</h3>
@@ -230,6 +238,11 @@ Invalid value for option 'count' - expected type Int, received value: str.
 <li>
 <code>mergeRepeatedObjects</code> is an optional boolean (defaults to <code>false</code>) - when set to <code>true</code> and an option contains an object value and is repeated, the subsequent values for the flag will be merged rather than overwriting the original value - eg. option <code>g</code> of type <code>Object</code>: <code>-g a:1 -g b:2 -g c:3,d:4</code> will result in <code>{a: 1, b: 2, c: 3, d: 4}</code>
 </li>
+<li>
+<code>positionalAnywhere</code> is an optional boolean (defaults to <code>true</code>) - when <code>true</code> it allows positional arguments anywhere, when <code>false</code>, all arguments after the first positional one are taken to be positional as well, even if they look like a flag. For example, with <code>positionalAnywhere: false</code>, the arguments <code>--flag --boom 12 --crack</code> would have two positional arguments: <code>12</code> and <code>--crack</code>
+</li>
+<li>
+<code>defaults</code> is an optional object following the option properties format, which specifies default values for all options. A default will be overridden if manually set. For example, you can do <code>default: { type: "String" }</code> to set the default type of all options to <code>String</code>, and then override that default in an individual option by setting the <code>type</code> property</li>
 </ul>
 
 <h4>
@@ -262,6 +275,10 @@ Invalid value for option 'count' - expected type Int, received value: str.
 <code>required</code> is an optional boolean - if set to <code>true</code>, the option parsing will fail if the option is not defined</li>
 <li>
 <code>overrideRequired</code> is a optional boolean - if set to <code>true</code> and the option is used, and there is another option which is required but not set, it will override the need for the required option and there will be no error - this is useful if you have required options and want to use <code>--help</code> or <code>--version</code> flags</li>
+<li>
+<code>concatRepeatedArrays</code> an optional boolean - same as the description in the Top Level Properties description, but just for this option, not all of them</li>
+<li>
+<code>mergeRepeatedObjects</code> an optional boolean - same as the description in the Top Level Properties description, but just for this option, not all of them</li>
 <li>
 <code>dependsOn</code> is an optional string or array of strings - if simply a string (the name of another option), it will make sure that that other option is set, if an array of strings, depending on whether <code>'and'</code> or <code>'or'</code> is first, it will either check whether all (<code>['and', 'option-a', 'option-b']</code>), or at least one (<code>['or', 'option-a', 'option-b']</code>) other options are set</li>
 <li>
