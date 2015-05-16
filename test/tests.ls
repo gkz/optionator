@@ -312,6 +312,17 @@ suite 'slicing' ->
   test 'array slice' ->
     eq {b: 2}, ['c'], ['cmd' '-b' '2' 'c'], [{option: 'b', type: 'Number'}], , {slice: 1}
 
+suite 'parse-argv' ->
+  test 'slices two' ->
+    {parse-argv} = optionator do
+      options: [
+        option: 'a'
+        type: 'Boolean'
+      ]
+    o = parse-argv <[ a b c d -a ]>
+    deep-equal o._, <[ c d ]>
+    equal o.a, true
+
 suite 'errors in defining options' ->
   test 'no options defined' ->
     throws (-> q ''), /No options defined/

@@ -291,6 +291,7 @@ main = (lib-options) ->
     (camelize-keys obj) <<< {_: positional}
 
   parse: parse
+  parse-argv: -> parse it, slice: 2
   generate-help: generate-help lib-options
   generate-help-for-option: generate-help-for-option get-option, lib-options
 
