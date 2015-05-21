@@ -13,10 +13,7 @@ files:
 main: './lib/'
 
 bugs: 'https://github.com/gkz/optionator/issues'
-licenses:
-  * type: 'MIT'
-    url: 'https://raw.githubusercontent.com/gkz/optionator/master/LICENSE'
-  ...
+license: 'MIT'
 engines:
   node: '>= 0.8.0'
 repository:
