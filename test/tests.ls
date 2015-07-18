@@ -50,9 +50,15 @@ suite 'boolean flags' ->
     eq {match: true}, [], '--match=true', opts
     eq {match: true}, [], '--no-match=false', opts
 
+  test 'using = true, short' ->
+    eq {match: true}, [], '-m=true', opts
+
   test 'using = negated' ->
     eq {match: false}, [], '--match=false', opts
     eq {match: false}, [], '--no-match=true', opts
+
+  test 'using = false, short' ->
+    eq {match: false}, [], '-m=false', opts
 
 suite 'argument' ->
   opts =

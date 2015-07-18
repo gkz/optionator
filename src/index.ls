@@ -241,13 +241,16 @@ main = (lib-options) ->
               name = opt.option
               if rest-positional
                 positional.push flag
-              else if opt.boolean
-                set-value name, true
               else if i is len - 1
                 if using-assign
-                  set-value name, val
+                  val-prime = if opt.boolean then parse-levn [type: 'Boolean'], val else val
+                  set-value name, val-prime
+                else if opt.boolean
+                  set-value name, true
                 else
                   prop := name
+              else if opt.boolean
+                set-value name, true
               else
                 throw new Error "Can't set argument '#flag' when not last flag in a group of short flags."
           else
