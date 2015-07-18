@@ -1,5 +1,5 @@
 {id, find, sort, min, max, map, unlines} = require 'prelude-ls'
-{name-to-raw, dasherize} = require './util'
+{name-to-raw, dasherize, natural-join} = require './util'
 require! wordwrap
 
 get-pre-text = (
@@ -20,14 +20,13 @@ get-pre-text = (
   names-string-len = names-string.length
   type-separator-string = if main-name is 'NUM' then '::' else type-separator
   type-separator-string-len = type-separator-string.length
-  type-string = if option.enum then "One of: #{ that.join ', ' }" else type
 
   if max-width? and not option.boolean
-  and initial-indent + names-string-len + type-separator-string-len + type-string.length > max-width
+  and initial-indent + names-string-len + type-separator-string-len + type.length > max-width
     wrap = wordwrap (initial-indent + names-string-len + type-separator-string-len), max-width
-    "#names-string#type-separator-string#{ wrap type-string .replace /^\s+/ ''}"
+    "#names-string#type-separator-string#{ wrap type .replace /^\s+/ ''}"
   else
-    "#names-string#{ if option.boolean then '' else "#type-separator-string#type-string" }"
+    "#names-string#{ if option.boolean then '' else "#type-separator-string#type" }"
 
 set-help-style-defaults = (help-style) !->
   help-style.alias-separator ?= ', '
@@ -110,10 +109,11 @@ generate-help = ({options, prepend, append, help-style = {}, stdout}) ->
         data.push {type: 'heading', value: that}
       else
         pre = get-pre-text item, help-style, max-width
-        desc = if item.default and not item.negate-name
-          if item.description? then "#that - default: #{item.default}" else "default: #{item.default}"
-        else
-          if item.description? then that else ''
+        desc-parts = []
+        desc-parts.push that if item.description?
+        desc-parts.push "either: #{ natural-join that }" if item.enum
+        desc-parts.push "default: #{item.default}" if item.default and not item.negate-name
+        desc = desc-parts.join ' - '
         data.push {type: 'option', pre, desc: desc, desc-len: desc.length}
         pre-len = pre.length
         option-count++

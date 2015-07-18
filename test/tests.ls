@@ -129,7 +129,7 @@ suite 'enum' ->
     eq {size: 'medium'}, [], '--size medium', enum-opt
 
   test 'invalid enum' ->
-    throws (-> q '--size Hello', enum-opt), /Option size: 'Hello' not in \[small, medium, large\]/
+    throws (-> q '--size Hello', enum-opt), /Option size: 'Hello' not one of small, medium, or large/
 
 suite 'argument names' ->
   opts =

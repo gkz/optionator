@@ -2,7 +2,7 @@ VERSION = '0.6.0'
 
 {id, map, compact, any, group-by, partition, chars, is-it-NaN, keys, Obj, camelize} = require 'prelude-ls'
 deep-is = require 'deep-is'
-{closest-string, name-to-raw, dasherize} = require './util'
+{closest-string, name-to-raw, dasherize, natural-join} = require './util'
 {generate-help, generate-help-for-option} = require './help'
 {parsed-type-check, parse-type} = require 'type-check'
 {parsed-type-parse: parse-levn} = require 'levn'
@@ -127,7 +127,7 @@ main = (lib-options) ->
         catch
           throw new Error "Invalid value for option '#name' - expected type #{opt.type}, received value: #value."
         if opt.enum and not any (-> deep-is it, val), opt.parsed-possibilities
-          throw new Error "Option #name: '#val' not in [#{ opt.enum.join ', ' }]."
+          throw new Error "Option #name: '#val' not one of #{ natural-join opt.enum }."
 
       current-type = typeof! obj[name]
       if obj[name]?

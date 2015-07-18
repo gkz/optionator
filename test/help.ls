@@ -127,10 +127,18 @@ suite 'help' ->
     }]
 
   test 'enum type' ->
-    q '  --size One of: small, medium, large  shirt size', options: [{
+    q '  --size String  shirt size - either: small, medium, or large', options: [{
       option: 'size'
       type: 'String'
       enum: <[ small medium large ]>
+      description: 'shirt size'
+    }]
+
+  test 'enum type, just two' ->
+    q '  --size String  shirt size - either: small or large', options: [{
+      option: 'size'
+      type: 'String'
+      enum: <[ small large ]>
       description: 'shirt size'
     }]
 
