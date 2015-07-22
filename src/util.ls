@@ -22,6 +22,6 @@ natural-join = (array) ->
   if array.length < 3
     array.join ' or '
   else
-    "#{ array.slice 0, array.length - 1 .join ', ' }, or #{array[*-1]}"
+    "#{ array.slice 0, -1 .join ', ' }, or #{array[*-1]}"
 
 module.exports = {closest-string, name-to-raw, dasherize, natural-join}
