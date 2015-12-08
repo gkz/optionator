@@ -87,6 +87,15 @@ main = (lib-options) ->
 
       opts[name] = option
 
+      if option.concat-repeated-arrays?
+        cra = option.concat-repeated-arrays
+        if 'Boolean' is typeof! cra
+          option.concat-repeated-arrays = [cra, {}]
+        else if cra.length is 1
+          option.concat-repeated-arrays = [cra.0, {}]
+        else if cra.length isnt 2
+          throw new Error "Invalid setting for concatRepeatedArrays"
+
       if option.alias or option.aliases
         throw new Error "-NUM option can't have aliases." if name is 'NUM'
         option.aliases ?= [].concat option.alias if option.alias
@@ -123,7 +132,12 @@ main = (lib-options) ->
         val = value
       else
         try
-          val = parse-levn opt.parsed-type, value
+          cra = opt.concat-repeated-arrays
+          if cra? and cra.0 and cra.1.one-value-per-flag
+          and opt.parsed-type.length is 1 and opt.parsed-type.0.structure is 'array'
+            val = [parse-levn opt.parsed-type.0.of, value]
+          else
+            val = parse-levn opt.parsed-type, value
         catch
           throw new Error "Invalid value for option '#name' - expected type #{opt.type}, received value: #value."
         if opt.enum and not any (-> deep-is it, val), opt.parsed-possibilities
@@ -131,7 +145,7 @@ main = (lib-options) ->
 
       current-type = typeof! obj[name]
       if obj[name]?
-        if opt.concat-repeated-arrays and current-type is 'Array'
+        if opt.concat-repeated-arrays? and opt.concat-repeated-arrays.0 and current-type is 'Array'
           obj[name] ++= val
         else if opt.merge-repeated-objects and current-type is 'Object'
           obj[name] <<< val

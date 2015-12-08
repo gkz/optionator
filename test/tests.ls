@@ -432,6 +432,31 @@ suite 'concat repeated arrays' ->
     eq {x: [1, 2, 3]}, [], '-x 1 -x 2 -x 3', opts2
     eq {y: [3]}, [], '-y 1 -y 2 -y 3', opts2
 
+  test 'one value per flag' ->
+    opts =
+      * option: 'x'
+        type: '[String]'
+        concat-repeated-arrays: [true, {+one-value-per-flag}]
+      ...
+
+    eq {x: ['a,b', 'c,d', 'e,f']}, [], '-x "a,b" -x "c,d" -x "e,f"', opts
+
+  test 'set with array, len is 1' ->
+    opts =
+      * option: 'x'
+        type: '[String]'
+        concat-repeated-arrays: [true]
+      ...
+    eq {x: <[ a b c d ]>}, [], '-x "a,b" -x "c,d"', opts
+
+  test 'invalid setting' ->
+    opts =
+      * option: 'x'
+        type: '[String]'
+        concat-repeated-arrays: []
+      ...
+    throws (-> q '', opts), /Invalid setting for concatRepeatedArrays/
+
 suite 'merge repeated objects' ->
   opts =
     * option: 'config'
