@@ -3,8 +3,6 @@
 
 Optionator is a JavaScript option parsing and help generation library used by [eslint](http://eslint.org), [Grasp](http://graspjs.com), [LiveScript](http://livescript.net), [esmangle](https://github.com/estools/esmangle), [escodegen](https://github.com/estools/escodegen), and [many more](https://www.npmjs.com/browse/depended/optionator).
 
-Site: http://gkz.github.io/optionator/
-
 For an online demo, check out the [Grasp online demo](http://www.graspjs.com/#demo).
 
 [About](#about) &middot; [Usage](#usage) &middot; [Settings Format](#settings-format) &middot; [Argument Format](#argument-format)
