@@ -29,8 +29,10 @@ main = (lib-options) ->
   lib-options.positional-anywhere ?= true
   lib-options.type-aliases ?= {}
   lib-options.defaults ?= {}
-  lib-options.defaults.concat-repeated-arrays = lib-options.concat-repeated-arrays
-  lib-options.defaults.merge-repeated-objects = lib-options.merge-repeated-objects
+  if lib-options.concat-repeated-arrays?
+    lib-options.defaults.concat-repeated-arrays = lib-options.concat-repeated-arrays
+  if lib-options.merge-repeated-objects?
+    lib-options.defaults.merge-repeated-objects = lib-options.merge-repeated-objects
 
   traverse = (options) !->
     throw new Error 'No options defined.' unless typeof! options is 'Array'

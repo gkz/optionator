@@ -421,16 +421,28 @@ suite 'concat repeated arrays' ->
   test 'overwrites non-array' ->
     eq {x: 3}, [], '-x 1 -x 2 -x 3', opts, more
 
-  opts2 =
-    * option: 'x'
-      type: '[Number]'
-      concat-repeated-arrays: true
-    * option: 'y'
-      type: '[Number]'
-
   test 'per option' ->
-    eq {x: [1, 2, 3]}, [], '-x 1 -x 2 -x 3', opts2
-    eq {y: [3]}, [], '-y 1 -y 2 -y 3', opts2
+    opts =
+      * option: 'x'
+        type: '[Number]'
+        concat-repeated-arrays: true
+      * option: 'y'
+        type: '[Number]'
+    eq {x: [1, 2, 3]}, [], '-x 1 -x 2 -x 3', opts
+    eq {y: [3]}, [], '-y 1 -y 2 -y 3', opts
+
+  test 'using defaults' ->
+    opts =
+      * option: 'x'
+        type: '[Number]'
+      * option: 'y'
+        type: '[Number]'
+        concat-repeated-arrays: false
+    more =
+      defaults: {+concat-repeated-arrays}
+
+    eq {x: [1, 2, 3]}, [], '-x 1 -x 2 -x 3', opts, more
+    eq {y: [3]}, [], '-y 1 -y 2 -y 3', opts, more
 
   test 'one value per flag' ->
     opts =
