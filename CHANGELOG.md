@@ -1,3 +1,11 @@
+# 0.7.0
+- added `concatRepeatedArrays` option: `oneValuePerFlag`, only allows one array value per flag
+- added `typeAliases` option
+- added `parseArgv` which takes an array and parses with the first two items sliced off
+- changed enum help style
+- bug fixes (#12)
+- use of `concatRepeatedArrays` and `mergeRepeatedObjects` at the top level is deprecated, use it as either a per-option option, or set them in the `defaults` object to set them for all objects
+
 # 0.6.0
 - added `defaults` lib-option flag, allowing one to set default properties for all options
 - added `concatRepeatedArrays` and `mergeRepeatedObjects` as option level properties, allowing you to turn this feature on for specific options only
