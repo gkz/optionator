@@ -582,3 +582,16 @@ suite 'heading' ->
     eq {aaa: 5}, [], '--aaa 5', opts
     eq {bbb: 'hi'}, [], '--bbb hi', opts
     eq {ccc: true}, [], '--ccc', opts
+
+suite 'type-aliases' ->
+  opts =
+    * option: 'x'
+      type: 'Path'
+    * option: 'y'
+      type: 'Rules'
+  type-aliases =
+    Path: 'String'
+    Rules: '[String]'
+
+  test 'basic' ->
+    eq {x: 'a', y: <[ c d ]>}, [], '-x a -y c,d', opts, {type-aliases}

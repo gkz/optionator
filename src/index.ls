@@ -27,6 +27,7 @@ main = (lib-options) ->
     lib-options.stdout = process.stdout
 
   lib-options.positional-anywhere ?= true
+  lib-options.type-aliases ?= {}
   lib-options.defaults ?= {}
   lib-options.defaults.concat-repeated-arrays = lib-options.concat-repeated-arrays
   lib-options.defaults.merge-repeated-objects = lib-options.merge-repeated-objects
@@ -46,7 +47,8 @@ main = (lib-options) ->
       unless option.parsed-type?
         throw new Error "No type defined for option '#name'." unless option.type
         try
-            option.parsed-type = parse-type option.type
+            type = if lib-options.type-aliases[option.type]? then that else option.type
+            option.parsed-type = parse-type type
         catch
           throw new Error "Option '#name': Error parsing type '#{option.type}': #{e.message}"
 
