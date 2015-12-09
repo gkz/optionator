@@ -1,4 +1,4 @@
-VERSION = '0.7.0'
+VERSION = '0.7.1'
 
 {id, map, compact, any, group-by, partition, chars, is-it-NaN, keys, Obj, camelize} = require 'prelude-ls'
 deep-is = require 'deep-is'

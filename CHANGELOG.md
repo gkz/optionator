@@ -1,5 +1,8 @@
+# 0.7.1
+- fix bug with use of `defaults` and `concatRepeatedArrays` or `mergeRepeatedObjects`
+
 # 0.7.0
-- added `concatRepeatedArrays` option: `oneValuePerFlag`, only allows one array value per flag
+- added `concatrepeatedarrays` option: `oneValuePerFlag`, only allows one array value per flag
 - added `typeAliases` option
 - added `parseArgv` which takes an array and parses with the first two items sliced off
 - changed enum help style
