@@ -187,9 +187,6 @@ suite '-NUM' ->
     opts = [{option: 'NUM', type: 'Int'}]
 
     test 'int basic' ->
-      eq {NUM: 1}, [], '-1.9', opts
-
-    test 'int from float' ->
       eq {NUM: 1}, [], '-1', opts
 
 suite 'positional' ->

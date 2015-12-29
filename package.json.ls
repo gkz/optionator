@@ -29,11 +29,11 @@ dependencies:
   'prelude-ls': '~1.1.2'
   'deep-is': '~0.1.3'
   wordwrap: '~1.0.0'
-  'type-check': '~0.3.1'
-  levn: '~0.2.5'
-  'fast-levenshtein': '~1.0.6'
+  'type-check': '~0.3.2'
+  levn: '~0.3.0'
+  'fast-levenshtein': '~1.0.7'
 
 dev-dependencies:
   livescript: '~1.4.0'
-  mocha: '~2.2.5'
-  istanbul: '~0.3.14'
+  mocha: '~2.3.4'
+  istanbul: '~0.4.1'
