@@ -1,3 +1,6 @@
+# 0.8.0
+- update `levn` dependency - supplying a float value to an option with type `Int` now throws an error, instead of silently converting to an `Int`
+
 # 0.7.1
 - fix bug with use of `defaults` and `concatRepeatedArrays` or `mergeRepeatedObjects`
 
