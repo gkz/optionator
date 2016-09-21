@@ -214,6 +214,10 @@ main = (lib-options) ->
       for name of obj
         check-dependency opts[name]
 
+    check-prop = !->
+      if prop
+        throw new Error "Value for '#prop' of type '#{ get-option prop .type}' required."
+
     switch typeof! input
     | 'String'
       args = parse-string input.slice slice ? 0
@@ -243,7 +247,7 @@ main = (lib-options) ->
       else
         if arg.match /^(--?)([a-zA-Z][-a-zA-Z0-9]*)(=)?(.*)?$/
           result = that
-          throw new Error "Value for '#prop' of type '#{ get-option prop .type}' required." if prop
+          check-prop!
 
           short = result.1.length is 1
           arg-name = result.2
@@ -304,6 +308,8 @@ main = (lib-options) ->
           else
             positional.push arg
             rest-positional := true if not lib-options.positional-anywhere
+
+    check-prop!
 
     check-mutually-exclusive!
     check-dependencies!

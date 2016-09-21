@@ -105,6 +105,7 @@ suite 'argument' ->
     throws (-> q '-C=', opts), /No value for 'C' specified/
 
   test 'value for prop required' ->
+    throws (-> q '--context', opts), /Value for 'context' of type 'Number' required./
     throws (-> q '--context --destroy', opts), /Value for 'context' of type 'Number' required./
 
   test 'can\'t set flag val when not last' ->
