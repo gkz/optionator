@@ -25,10 +25,10 @@ all: build
 build: $(LIB) package.json
 
 test: build
-	$(MOCHA) --reporter dot --ui tdd --compilers ls:$(LS)
+	$(MOCHA) --reporter dot --ui tdd --require $(LS) "test/*.ls"
 
 coverage: build
-	$(ISTANBUL) cover $(MOCHA2) -- --reporter dot --ui tdd --compilers ls:$(LS)
+	$(ISTANBUL) cover $(MOCHA2) -- --reporter dot --ui tdd --require $(LS) "test/*.ls"
 
 dev-install: package.json
 	npm install .
