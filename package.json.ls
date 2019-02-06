@@ -31,9 +31,9 @@ dependencies:
   wordwrap: '~1.0.0'
   'type-check': '~0.3.2'
   levn: '~0.3.0'
-  'fast-levenshtein': '~2.0.4'
+  'fast-levenshtein': '~2.0.6'
 
 dev-dependencies:
-  livescript: '~1.5.0'
-  mocha: '~3.0.2'
-  istanbul: '~0.4.1'
+  livescript: '~1.6.0'
+  mocha: '~5.2.0'
+  istanbul: '~0.4.5'
