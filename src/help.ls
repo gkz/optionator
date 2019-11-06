@@ -1,6 +1,13 @@
 {id, find, sort, min, max, map, unlines} = require 'prelude-ls'
 {name-to-raw, dasherize, natural-join} = require './util'
-require! wordwrap
+word-wrap = require 'word-wrap'
+
+wordwrap = (a, b) ->
+  [indent, width] = if b == undefined then
+    ['', a - 1]
+  else
+    [' ' * a, b - a - 1]
+  (text) -> word-wrap text, {indent, width, trim: true}
 
 get-pre-text = (
   {option: main-name, short-names = [], long-names = [], type, description}:option,

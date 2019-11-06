@@ -28,7 +28,7 @@ scripts:
 dependencies:
   'prelude-ls': '~1.1.2'
   'deep-is': '~0.1.3'
-  wordwrap: '~1.0.0'
+  'word-wrap': '~1.2.3'
   'type-check': '~0.3.2'
   levn: '~0.3.0'
   'fast-levenshtein': '~2.0.6'
