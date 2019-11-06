@@ -35,5 +35,5 @@ dependencies:
 
 dev-dependencies:
   livescript: '~1.6.0'
-  mocha: '~5.2.0'
+  mocha: '~6.2.2'
   istanbul: '~0.4.5'
