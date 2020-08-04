@@ -31,7 +31,7 @@ dependencies:
   'word-wrap': '^1.2.3'
   'type-check': '^0.4.0'
   levn: '^0.4.1'
-  'fast-levenshtein': '^2.0.6'
+  'fastest-levenshtein': '^1.0.10'
 
 dev-dependencies:
   livescript: '^1.6.0'
