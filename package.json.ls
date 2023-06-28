@@ -1,5 +1,5 @@
 name: 'optionator'
-version: '0.9.2'
+version: '0.9.3'
 
 author: 'George Zahariev <z@georgezahariev.com>'
 description: 'option parsing and help generation'
