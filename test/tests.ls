@@ -268,6 +268,8 @@ suite 'array/object input' ->
       type: '(Int,String)'
     * option: 'map'
       type: '{a:Int,b:Boolean}'
+    * option: 'strarr'
+      type: '[String]'
 
   test 'array' ->
     eq {el: 5}, [], ['node', 'cmd.js', '--el', '5'], opts
@@ -308,6 +310,15 @@ suite 'array/object input' ->
 
   test 'invalid object' ->
     throws (-> q {el: 'hi'}, opts), /Option 'el': Invalid type for 'hi' - expected type 'Number'/
+
+  test 'spaced string in array' ->
+    eq {strarr: ['/a/b c/d']}, [], ['node', 'cmd.js', '--strarr', '/a/b c/d'], opts
+
+  test 'spaced strings in array' ->
+    eq {strarr: ['/a/b c/d', '/e/f g/h']}, [], ['node', 'cmd.js', '--strarr', '/a/b c/d', '--strarr', '/e/f g/h'], opts
+
+  test 'spaced string' ->
+    eq {hasta-la-vista: '/a/b c/d'}, [], ['node', 'cmd.js', '--hasta-la-vista', '/a/b c/d'], opts
 
 suite 'slicing' ->
   test 'string slice' ->
