@@ -1,6 +1,6 @@
 {id, find, sort, min, max, map, unlines} = require 'prelude-ls'
 {name-to-raw, dasherize, natural-join} = require './util'
-word-wrap = require '@aashutoshrathi/word-wrap'
+word-wrap = require 'word-wrap'
 
 wordwrap = (a, b) ->
   [indent, width] = if b == undefined then
